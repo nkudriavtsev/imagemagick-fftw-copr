@@ -1,7 +1,7 @@
 # ImageMagick has adopted a new Version.Patchlevel version numbering system...
 # 5.4.0.3 is actually version 5.4.0, Patchlevel 3.
-%define VER 6.4.0
-%define Patchlevel 7
+%define VER 6.3.8
+%define Patchlevel 1
 Summary: An X application for displaying and manipulating images.
 Name: ImageMagick
 %if "%{Patchlevel}" != ""
@@ -18,8 +18,8 @@ Source: ftp://ftp.ImageMagick.org/pub/ImageMagick/ImageMagick-%{VER}-%{Patchleve
 Source: ftp://ftp.ImageMagick.org/pub/ImageMagick/ImageMagick-%{version}.tar.bz2
 %endif
 Source1: magick_small.png
-Patch1: ImageMagick-6.4.0-multilib.patch
-
+Patch1: ImageMagick-6.3.8-multilib.patch
+Patch2: ImageMagick-6.3.8-icon.patch
 
 
 
@@ -120,6 +120,7 @@ however.
 %prep
 %setup -q -n %{name}-%{VER}
 %patch1 -p1 -b .multilib
+%patch2 -p1 -b .icon
 
 
 %build
@@ -182,10 +183,10 @@ rm -f  $RPM_BUILD_ROOT%{_libdir}/*.{a,la}
 %define wordsize 32
 %endif
 
-mv $RPM_BUILD_ROOT%{_includedir}/ImageMagick/magick/magick-config.h \
-   $RPM_BUILD_ROOT%{_includedir}/ImageMagick/magick/magick-config-%{wordsize}.h
+mv $RPM_BUILD_ROOT%{_includedir}/magick/magick-config.h \
+   $RPM_BUILD_ROOT%{_includedir}/magick/magick-config-%{wordsize}.h
 
-cat >$RPM_BUILD_ROOT%{_includedir}/ImageMagick/magick/magick-config.h <<EOF
+cat >$RPM_BUILD_ROOT%{_includedir}/magick/magick-config.h <<EOF
 #ifndef ORBIT_MULTILIB
 #define ORBIT_MULTILIB
 
@@ -217,9 +218,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc QuickStart.txt ChangeLog Platforms.txt
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt
-%attr(755,root,root) %{_libdir}/libMagickCore.so.*
-%attr(755,root,root) %{_libdir}/libMagickWand.so.*
+%doc README.txt LICENSE NOTICE AUTHORS NEWS
+%attr(755,root,root) %{_libdir}/libMagick.so.*
+%attr(755,root,root) %{_libdir}/libWand.so.*
 %{_bindir}/[a-z]*
 %{_libdir}/ImageMagick*
 %{_datadir}/ImageMagick*
@@ -229,21 +230,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,root)
-%{_bindir}/MagickCore-config
-%{_bindir}/MagickWand-config
 %{_bindir}/Magick-config
 %{_bindir}/Wand-config
-%{_libdir}/libMagickCore.so
-%{_libdir}/libMagickWand.so
+%{_libdir}/libMagick.so
+%{_libdir}/libWand.so
 %{_libdir}/pkgconfig/ImageMagick.pc
-%{_libdir}/pkgconfig/MagickCore.pc
-%{_libdir}/pkgconfig/MagickWand.pc
 %{_libdir}/pkgconfig/Wand.pc
-%{_includedir}/ImageMagick
+%{_includedir}/magick
+%{_includedir}/wand
 %{_mandir}/man1/Magick-config.*
 %{_mandir}/man1/Wand-config.*
-%{_mandir}/man1/MagickCore-config.*
-%{_mandir}/man1/MagickWand-config.*
 
 %files c++
 %defattr(-,root,root)
@@ -252,11 +248,10 @@ rm -rf $RPM_BUILD_ROOT
 %files c++-devel
 %defattr(-,root,root)
 %{_bindir}/Magick++-config
-%{_includedir}/ImageMagick/Magick++
-%{_includedir}/ImageMagick/Magick++.h
+%{_includedir}/Magick++
+%{_includedir}/Magick++.h
 %{_libdir}/libMagick++.so
 %{_libdir}/pkgconfig/ImageMagick++.pc
-%{_libdir}/pkgconfig/Magick++.pc
 %{_mandir}/man1/Magick++-config.*
 
 %files perl -f perl-pkg-files
@@ -265,8 +260,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
-* Tue Apr 22 2008 Norm Murray <nmurray@redhat.com> 6.4.0.7-1
-- update to 6.4.0.7
+* Tue Apr 22 2008 Norm Murray <nmurray@redhat.com> 6.3.8.1-4
+- 24 bpp ico handling fix from Hans de Goede <j.w.r.degoede@hhs.nl>
 
 * Wed Feb 27 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 6.3.8.1-3
 - Rebuild for perl 5.10 (again)

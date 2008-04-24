@@ -1,0 +1,21 @@
+diff -up ImageMagick-6.3.8/coders/icon.c~ ImageMagick-6.3.8/coders/icon.c
+--- ImageMagick-6.3.8/coders/icon.c~	2008-04-01 17:30:58.000000000 +0200
++++ ImageMagick-6.3.8/coders/icon.c	2008-04-01 17:30:58.000000000 +0200
+@@ -501,7 +501,7 @@ static Image *ReadICONImage(const ImageI
+             q->blue=ScaleCharToQuantum((unsigned char) ReadBlobByte(image));
+             q->green=ScaleCharToQuantum((unsigned char) ReadBlobByte(image));
+             q->red=ScaleCharToQuantum((unsigned char) ReadBlobByte(image));
+-            if (image->matte != MagickFalse)
++            if (icon_info.bits_per_pixel == 32)
+               q->opacity=(Quantum) QuantumRange-ScaleCharToQuantum(
+                 (unsigned char) ReadBlobByte(image));
+             q++;
+@@ -527,7 +527,7 @@ static Image *ReadICONImage(const ImageI
+         ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+     }
+     (void) SyncImage(image);
+-    if (icon_info.bits_per_pixel <= 16)
++    if (icon_info.bits_per_pixel != 32)
+       {
+         /*
+           Read the ICON alpha mask.
