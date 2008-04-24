@@ -9,7 +9,7 @@ Version: %{VER}.%{Patchlevel}
 %else
 Version: %{VER}
 %endif
-Release: 1%{?dist}
+Release: 4%{?dist}
 License: ImageMagick
 Group: Applications/Multimedia
 %if "%{Patchlevel}" != ""
