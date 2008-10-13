@@ -1,7 +1,7 @@
 # ImageMagick has adopted a new Version.Patchlevel version numbering system...
 # 5.4.0.3 is actually version 5.4.0, Patchlevel 3.
 %define VER 6.3.5
-%define Patchlevel 9
+%define Patchlevel 10
 Summary: An X application for displaying and manipulating images.
 Name: ImageMagick
 %if "%{Patchlevel}" != ""
@@ -13,7 +13,7 @@ Release: 1%{?dist}
 License: freeware
 Group: Applications/Multimedia
 %if "%{Patchlevel}" != ""
-Source: ftp://ftp.ImageMagick.org/pub/ImageMagick/ImageMagick-%{VER}-%{Patchlevel}.tar.bz2
+Source: ftp://ftp.ImageMagick.org/pub/ImageMagick/legacy/ImageMagick-%{VER}-%{Patchlevel}.tar.bz2
 %else
 Source: ftp://ftp.ImageMagick.org/pub/ImageMagick/ImageMagick-%{version}.tar.bz2
 %endif
@@ -256,6 +256,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun Oct 12 2008 Orion Poplawski <orion@cora.nwra.com> 6.3.5.10-1.fc8
+- Update to 6.3.5.10 (#466178 - Unknown device epswrite)
+
 * Fri Sep 21 2007 Norm Murray <nmurray@redhat.com> 6.3.5.9-1.fc8
 - rebase to 6.3.5.9
 - fix build with missing open() arg
