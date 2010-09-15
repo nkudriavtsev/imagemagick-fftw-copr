@@ -1,19 +1,19 @@
-%define VER 6.5.4
-%define Patchlevel 7
+%global VER 6.6.4
+%global Patchlevel 1
 
 Name:           ImageMagick
 Version:        %{VER}.%{Patchlevel}
-Release:        3%{?dist}
+Release:        13%{?dist}
 Summary:        An X application for displaying and manipulating images
 Group:          Applications/Multimedia
 License:        ImageMagick
 Url:            http://www.imagemagick.org/
-Source0:        ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar.lzma
+Source0:        ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar.xz
 Patch1:         ImageMagick-6.4.0-multilib.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
-BuildRequires:  libtiff-devel, giflib-devel, zlib-devel, perl-devel
+BuildRequires:  libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
 BuildRequires:  ghostscript-devel, djvulibre-devel
 BuildRequires:  libwmf-devel, jasper-devel, libtool-ltdl-devel
 BuildRequires:  libX11-devel, libXext-devel, libXt-devel
@@ -166,6 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 cp -a www/source $RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{VER}
+# Delete *ONLY* _libdir/*.la files! .la files used internally to handle plugins - BUG#185237!!!
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
 
 # fix weird perl Magick.so permissions
@@ -222,6 +223,8 @@ cat >$RPM_BUILD_ROOT%{_includedir}/%{name}/magick/magick-config.h <<EOF
 #endif
 EOF
 
+# Fonts must be packaged separately. It does nothave matter and demos work without it.
+rm PerlMagick/demo/Generic.ttf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -276,6 +279,7 @@ rm -rf $RPM_BUILD_ROOT
 %files doc
 %defattr(-,root,root,-)
 %doc %{_datadir}/doc/%{name}-%{VER}
+%doc LICENSE
 
 %files c++
 %defattr(-,root,root,-)
@@ -301,6 +305,37 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Sep 14 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.6.4.1-13
+- Update to 6.6.4-1 to fix FBFS BZ#631169.
+
+* Fri Jul 30 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.6.2.1-12
+- Add %%doc LICENSE as it required new Licensing Guidelines Update
+	( https://fedoraproject.org/wiki/Packaging:LicensingGuidelines )
+
+* Wed Jun 23 2010 Mamoru Tasaka <mtasaka@ioa.s.u-tokyo.ac.jp> - 6.6.2.1-11
+- Rebuild (to fix downgrade after perl-5.12.0-rebuild tag)
+
+* Tue Jun 1 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.6.2.1-10
+- New version 6.6.2-1 (BZ#579458, BZ#565940 - http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=16320)
+- Replace %%define by %%global
+
+* Tue Jun 01 2010 Marcela Maslanova <mmaslano@redhat.com> - 6.6.0.2-9
+- Mass rebuild with perl-5.12.0
+
+* Sat Mar 6 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.6.0.2-8
+- Update to 6.6.0-2 (BZ#570766)
+
+* Tue Jan 5 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.5.8.10-6
+- Update to 6.5.8-10 (BZ#547806)
+- Change source tarball from .tar.lzma to .tar.xz folow to upstream.
+
+* Fri Dec  4 2009 Stepan Kasal <skasal@redhat.com> - 6.5.4.7-5
+- rebuild against perl 5.10.1
+
+* Mon Nov 30 2009 Pavel Alexeev <Pahan@Hubbitus.info> - 6.5.4.7-4
+- Explude file Generic.ttf from -perl subpackage demos. Demos perfectly work without it, but with bundled font
+  package does not pass QA (Unfortunately no bugreport there, only mail from Nicolas Mailhot)
+
 * Mon Aug 3 2009 Pavel Alexeev <Pahan@Hubbitus.info> - 6.5.4.7-3
 - Update to version 6.5.4-7
 - Use lzma-compressed source tarball as sugested by Ville Skyttä (BZ#515319)
