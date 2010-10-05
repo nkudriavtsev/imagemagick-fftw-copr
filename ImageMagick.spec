@@ -3,7 +3,7 @@
 
 Name:           ImageMagick
 Version:        %{VER}.%{Patchlevel}
-Release:        14%{?dist}
+Release:        14%{?dist}.1
 Summary:        An X application for displaying and manipulating images
 Group:          Applications/Multimedia
 License:        ImageMagick
@@ -305,6 +305,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Oct 05 2010 jkeating - 6.6.4.1-14.1
+- Rebuilt for gcc bug 634757
+
 * Fri Sep 17 2010 Rex Dieter <rdieter@fedoraproject.org> - 6.6.4.1-14
 - %%files: track sonames, so as not to be surprised by future ABI breaks
 
