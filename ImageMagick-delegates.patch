@@ -1,6 +1,6 @@
-diff -up ImageMagick-6.6.5-10/config/delegates.xml.in.delegates ImageMagick-6.6.5-10/config/delegates.xml.in
---- ImageMagick-6.6.5-10/config/delegates.xml.in.delegates	2010-10-14 11:32:31.000000000 -0600
-+++ ImageMagick-6.6.5-10/config/delegates.xml.in	2011-11-03 09:52:26.881294745 -0600
+diff -up config/delegates.xml.in.delegates ImageMagick-6.6.5-10/config/delegates.xml.in
+--- config/delegates.xml.in.delegates	2010-10-14 11:32:31.000000000 -0600
++++ config/delegates.xml.in	2011-11-03 09:52:26.881294745 -0600
 @@ -81,7 +81,7 @@
    <delegate decode="ilbm" command="&quot;@ILBMDecodeDelegate@&quot; &quot;%i&quot; &gt; &quot;%o&quot;"/>
    <delegate decode="man" command="&quot;@MANDelegate@&quot; -man -Tps &quot;%i&quot; &gt; &quot;%o&quot;"/>
