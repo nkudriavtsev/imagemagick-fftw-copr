@@ -3,13 +3,15 @@
 
 Name:           ImageMagick
 Version:        %{VER}.%{Patchlevel}
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        An X application for displaying and manipulating images
 Group:          Applications/Multimedia
 License:        ImageMagick
 Url:            http://www.imagemagick.org/
 Source0:        ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar.xz
 Patch1:         ImageMagick-6.4.0-multilib.patch
+#Upstream patch for ffmpeg support
+Patch2:         ImageMagick-delegates.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
@@ -128,6 +130,7 @@ however.
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
 %patch1 -p1 -b .multilib
+%patch2 -p0 -b .delegates
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
 touch -r README.txt README.txt.tmp
@@ -305,6 +308,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 2 2011 Orion Poplawski <orion@cora.nwra.com> - 6.6.5.10-20
+- Patch delegates.xml for ffmpeg (bug #750383)
+
 * Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.6.5.10-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
