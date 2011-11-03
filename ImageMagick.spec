@@ -3,7 +3,7 @@
 
 Name:           ImageMagick
 Version:        %{VER}.%{Patchlevel}
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        An X application for displaying and manipulating images
 Group:          Applications/Multimedia
 License:        ImageMagick
@@ -12,6 +12,8 @@ Source0:        ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchleve
 Patch1:         ImageMagick-6.4.0-multilib.patch
 # Backport upstream fix: http://trac.imagemagick.org/changeset?format=diff&new=3022&old=2002&new_path=ImageMagick%2Ftrunk%2Fmagick%2Fconfigure.c&old_path=ImageMagick%2Ftrunk%2Fmagick%2Fconfigure.c
 Patch2:         diff-ImageMagick_trunk_magick_configure.c-from-r2002-to-r3022.diff
+#Upstream patch for ffmpeg support
+Patch3:         ImageMagick-delegates.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
@@ -131,6 +133,7 @@ however.
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
 %patch1 -p1 -b .multilib
 %patch2 -p2 -b .cwdcode
+%patch3 -p0 -b .delegates
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
 touch -r README.txt README.txt.tmp
@@ -308,6 +311,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 2 2011 Orion Poplawski <orion@cora.nwra.com> - 6.6.4.1-16
+- Patch delegates.xml for ffmpeg (bug #750383)
+
 * Fri Dec 17 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.6.4.1-15
 - Backport Patch2: diff-ImageMagick_trunk_magick_configure.c-from-r2002-to-r3022.diff (BZ#652860, BZ#653577)
 
