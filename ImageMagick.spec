@@ -1,25 +1,22 @@
-%global VER 6.7.0
-%global Patchlevel 10
+%global VER 6.7.7
+%global Patchlevel 5
 
-Name:           ImageMagick
-Version:        %{VER}.%{Patchlevel}
-Release:        4%{?dist}
-Summary:        An X application for displaying and manipulating images
-Group:          Applications/Multimedia
-License:        ImageMagick
-Url:            http://www.imagemagick.org/
-Source0:        ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar.xz
-Patch1:         ImageMagick-6.4.0-multilib.patch
-#Upstream patch for ffmpeg support
-Patch2:         ImageMagick-delegates.patch
+Name:		ImageMagick
+Version:		%{VER}.%{Patchlevel}
+Release:		1%{?dist}
+Summary:		An X application for displaying and manipulating images
+Group:		Applications/Multimedia
+License:		ImageMagick
+Url:			http://www.imagemagick.org/
+Source0:		ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
-BuildRequires:  libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
-BuildRequires:  ghostscript-devel, djvulibre-devel
-BuildRequires:  libwmf-devel, jasper-devel, libtool-ltdl-devel
-BuildRequires:  libX11-devel, libXext-devel, libXt-devel
-BuildRequires:  lcms-devel, libxml2-devel, librsvg2-devel, OpenEXR-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
+BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
+BuildRequires:	ghostscript-devel, djvulibre-devel
+BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
+BuildRequires:	libX11-devel, libXext-devel, libXt-devel
+BuildRequires:	lcms-devel, libxml2-devel, librsvg2-devel, OpenEXR-devel
 
 %description
 ImageMagick is an image display and manipulation tool for the X
@@ -129,8 +126,6 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
-%patch1 -p1 -b .multilib
-%patch2 -p0 -b .delegates
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
 touch -r README.txt README.txt.tmp
@@ -165,30 +160,30 @@ make
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
-cp -a www/source $RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{VER}
+make install DESTDIR=%{buildroot} INSTALL="install -p"
+cp -a www/source %{buildroot}%{_datadir}/doc/%{name}-%{VER}
 # Delete *ONLY* _libdir/*.la files! .la files used internally to handle plugins - BUG#185237!!!
-rm $RPM_BUILD_ROOT%{_libdir}/*.la
+rm %{buildroot}%{_libdir}/*.la
 
 # fix weird perl Magick.so permissions
-chmod 755 $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Image/Magick/Magick.so
+chmod 755 %{buildroot}%{perl_vendorarch}/auto/Image/Magick/Magick.so
 
 # perlmagick: fix perl path of demo files
 %{__perl} -MExtUtils::MakeMaker -e 'MY->fixin(@ARGV)' PerlMagick/demo/*.pl
 
 # perlmagick: cleanup various perl tempfiles from the build which get installed
-find $RPM_BUILD_ROOT -name "*.bs" |xargs rm -f
-find $RPM_BUILD_ROOT -name ".packlist" |xargs rm -f
-find $RPM_BUILD_ROOT -name "perllocal.pod" |xargs rm -f
+find %{buildroot} -name "*.bs" |xargs rm -f
+find %{buildroot} -name ".packlist" |xargs rm -f
+find %{buildroot} -name "perllocal.pod" |xargs rm -f
 
 # perlmagick: build files list
 echo "%defattr(-,root,root,-)" > perl-pkg-files
-find $RPM_BUILD_ROOT/%{_libdir}/perl* -type f -print \
-        | sed "s@^$RPM_BUILD_ROOT@@g" > perl-pkg-files 
-find $RPM_BUILD_ROOT%{perl_vendorarch} -type d -print \
-        | sed "s@^$RPM_BUILD_ROOT@%dir @g" \
+find %{buildroot}/%{_libdir}/perl* -type f -print \
+        | sed "s@^%{buildroot}@@g" > perl-pkg-files 
+find %{buildroot}%{perl_vendorarch} -type d -print \
+        | sed "s@^%{buildroot}@%dir @g" \
         | grep -v '^%dir %{perl_vendorarch}$' \
         | grep -v '/auto$' >> perl-pkg-files 
 if [ -z perl-pkg-files ] ; then
@@ -203,10 +198,10 @@ fi
 %define wordsize 32
 %endif
 
-mv $RPM_BUILD_ROOT%{_includedir}/%{name}/magick/magick-config.h \
-   $RPM_BUILD_ROOT%{_includedir}/%{name}/magick/magick-config-%{wordsize}.h
+mv %{buildroot}%{_includedir}/%{name}/magick/magick-config.h \
+   %{buildroot}%{_includedir}/%{name}/magick/magick-config-%{wordsize}.h
 
-cat >$RPM_BUILD_ROOT%{_includedir}/%{name}/magick/magick-config.h <<EOF
+cat >%{buildroot}%{_includedir}/%{name}/magick/magick-config.h <<EOF
 #ifndef IMAGEMAGICK_MULTILIB
 #define IMAGEMAGICK_MULTILIB
 
@@ -227,7 +222,7 @@ EOF
 rm PerlMagick/demo/Generic.ttf
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %post -p /sbin/ldconfig
@@ -243,8 +238,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc QuickStart.txt ChangeLog Platforms.txt
 %doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt
-%{_libdir}/libMagickCore.so.4*
-%{_libdir}/libMagickWand.so.4*
+%{_libdir}/libMagickCore.so.5*
+%{_libdir}/libMagickWand.so.5*
 %{_bindir}/[a-z]*
 %{_libdir}/%{name}-%{VER}
 %{_datadir}/%{name}-%{VER}
@@ -286,7 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc Magick++/AUTHORS Magick++/ChangeLog Magick++/NEWS Magick++/README
 %doc www/Magick++/COPYING
-%{_libdir}/libMagick++.so.4*
+%{_libdir}/libMagick++.so.5*
 
 %files c++-devel
 %defattr(-,root,root,-)
@@ -304,10 +299,30 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
-
 %changelog
-* Wed Nov 2 2011 Orion Poplawski <orion@cora.nwra.com> - 6.7.0.10-4
-- Patch delegates.xml for ffmpeg (bug #750383)
+* Sat Jun 2 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.7.5-1
+- Update to 6.7.7-5 version. Prepare and update in stable Fedora 16 to address security problems (f.e. bz#808159).
+
+* Fri May 11 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.6.5-2
+- Rebuild due libtiff update http://www.mail-archive.com/devel@lists.fedoraproject.org/msg42846.html
+
+* Tue Apr 10 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.6.5-1
+- Update to 6.7.6.5 to fix security issues: bz#807993, bz#807994, bz#807997,
+	bz#808159, bz#804591, bz#804588
+
+* Sat Feb 25 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.5.6-1
+- Update by request https://bugzilla.redhat.com/show_bug.cgi?id=755827#c8
+- Delete multilib patch as it should be in main sources.
+- Replace $RPM_BUILD_ROOT by %%buildroot
+
+* Thu Jan 12 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.7.1.9-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
+* Mon Dec 05 2011 Adam Jackson <ajax@redhat.com> 6.7.1.9-2
+- Rebuild for new libpng
+
+* Mon Aug 22 2011 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.1.9-1
+- New version 6.7.1-9.
 
 * Thu Jul 21 2011 Petr Sabata <contyk@redhat.com> - 6.7.0.10-3
 - Perl mass rebuild
