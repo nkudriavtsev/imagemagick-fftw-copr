@@ -3,7 +3,7 @@
 
 Name:		ImageMagick
 Version:		%{VER}.%{Patchlevel}
-Release:		3%{?dist}
+Release:		4%{?dist}
 Summary:		An X application for displaying and manipulating images
 Group:		Applications/Multimedia
 License:		ImageMagick
@@ -17,6 +17,9 @@ BuildRequires:	ghostscript-devel, djvulibre-devel
 BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
 BuildRequires:	libX11-devel, libXext-devel, libXt-devel
 BuildRequires:	lcms-devel, libxml2-devel, librsvg2-devel, OpenEXR-devel
+
+# bz#844101, bz#844103
+Patch1:         ImageMagick-6.7.5-6-CVE-2012-3437.patch
 
 %description
 ImageMagick is an image display and manipulation tool for the X
@@ -126,6 +129,9 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
+
+%patch1 -p0 -R -b .CVE-2012-3437
+
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
 touch -r README.txt README.txt.tmp
@@ -303,6 +309,9 @@ rm -rf %{buildroot}
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sat Aug 11 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.5.6-4
+- Fix CVE-2012-3437 (bz#844101, 844103)
+
 * Sat Feb 25 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.5.6-1
 - Update by request https://bugzilla.redhat.com/show_bug.cgi?id=755827#c8
 - Delete multilib patch as it should be in main sources.
