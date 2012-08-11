@@ -3,7 +3,7 @@
 
 Name:           ImageMagick
 Version:        %{VER}.%{Patchlevel}
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An X application for displaying and manipulating images
 Group:          Applications/Multimedia
 License:        ImageMagick
@@ -17,6 +17,8 @@ Patch2:         ImageMagick-delegates.patch
 Patch3:         ImageMagick-6.7.0-10-CVE-2012-0259.patch
 # http://www.imagemagick.org/discourse-server/viewtopic.php?p=82865#p82865 (bz#807993)
 Patch4:         ImageMagick-6.7.0-10-CVE-2012-1610.patch
+# bz#844101, bz#844103
+Patch5:         ImageMagick-6.7.0-10-CVE-2012-3437.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
@@ -138,6 +140,7 @@ however.
 %patch2 -p0 -b .delegates
 %patch3 -p1 -b .CVE-2012-0259
 %patch4 -p1 -b .CVE-2012-1610
+%patch5 -p0 -R -b .CVE-2012-3437
 
 
 sed -i 's/libltdl.la/libltdl.so/g' configure
@@ -315,6 +318,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Aug 11 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.0.10-6
+- Fix CVE-2012-3437 (bz#844101, 844103)
+
 * Tue Jun 12 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.0.10-5
 - Add Patch3: ImageMagick-6.7.0-10-CVE-2012-0259.patch - http://www.imagemagick.org/discourse-server/viewtopic.php?f=4&t=20629 (bz#807993)
 - And Patch4: ImageMagick-6.7.0-10-CVE-2012-1620.patch - http://www.imagemagick.org/discourse-server/viewtopic.php?p=82865#p82865 (bz#807993)
