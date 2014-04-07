@@ -1,9 +1,9 @@
-%global VER 6.8.8
-%global Patchlevel 10
+%global VER 6.8.7
+%global Patchlevel 0
 
 Name:		ImageMagick
 Version:		%{VER}.%{Patchlevel}
-Release:		2%{?dist}
+Release:		5%{?dist}
 Summary:		An X application for displaying and manipulating images
 Group:		Applications/Multimedia
 License:		ImageMagick
@@ -11,6 +11,9 @@ Url:			http://www.imagemagick.org/
 Source0:		ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
 Requires:		%{name}-libs = %{version}-%{release}
+
+# CVE bug fix backporting: http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=25128&sid=ff40ad66b1f845c767aa77c7e32f9f9c&p=109901#p109901
+Patch0:		ImageMagick-6.8.7-psd-CVE.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
@@ -132,6 +135,8 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
+%patch0 -p4 -b .cve
+
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
 touch -r README.txt README.txt.tmp
@@ -253,8 +258,8 @@ rm -rf %{buildroot}
 %files libs
 %defattr(-,root,root,-)
 %doc LICENSE NOTICE AUTHORS.txt QuickStart.txt
-%{_libdir}/libMagickCore-6.Q16.so.*
-%{_libdir}/libMagickWand-6.Q16.so.*
+%{_libdir}/libMagickCore-6.Q16.so.1*
+%{_libdir}/libMagickWand-6.Q16.so.1*
 %{_libdir}/%{name}-%{VER}
 %{_datadir}/%{name}-6
 %exclude %{_libdir}/%{name}-%{VER}/modules-Q16/coders/djvu.*
@@ -298,7 +303,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc Magick++/AUTHORS Magick++/ChangeLog Magick++/NEWS Magick++/README
 %doc www/Magick++/COPYING
-%{_libdir}/libMagick++-6.Q16.so.*
+%{_libdir}/libMagick++-6.Q16.so.3*
 
 %files c++-devel
 %defattr(-,root,root,-)
@@ -319,8 +324,12 @@ rm -rf %{buildroot}
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
-* Sat Mar 29 2014 Pavel Alexeev <Pahan@Hubbitus.info>- 6.8.8.10-2
-- Update to 6.8.8-10 with hope to fix CVE-2014-1958 (bz#1067276, bz#1067277, bz#1067278), CVE-2014-1947, CVE-2014-2030 (bz#1064098)
+* Thu Apr 3 2014 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.7.0-5
+- Build 6.8.7-0 version because soname bump happened in newer.
+- Concretize soname versioning.
+- Add Patch0: ImageMagick-6.8.7-psd-CVE.patch CVE bug fix backporting:
+	http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=25128&sid=ff40ad66b1f845c767aa77c7e32f9f9c&p=109901#p109901
+	for fix CVE-2014-1958 (bz#1067276, bz#1067277, bz#1067278), CVE-2014-1947, CVE-2014-2030 (bz#1064098)
 - Enable %%check by Alexander Todorov suggestion - bz#1076671.
 - Add %%{?_smp_mflags} into make install and check (not main compilation).
 
