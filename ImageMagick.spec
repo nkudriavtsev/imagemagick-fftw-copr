@@ -3,7 +3,7 @@
 
 Name:		ImageMagick
 Version:		%{VER}.%{Patchlevel}
-Release:		5%{?dist}
+Release:		6%{?dist}
 Summary:		An X application for displaying and manipulating images
 Group:		Applications/Multimedia
 License:		ImageMagick
@@ -14,11 +14,18 @@ Requires:		%{name}-libs = %{version}-%{release}
 
 # CVE bug fix backporting: http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=25128&sid=ff40ad66b1f845c767aa77c7e32f9f9c&p=109901#p109901
 Patch0:		ImageMagick-6.8.7-psd-CVE.patch
-# Backport upstream fix http://trac.imagemagick.org/changeset/16765 (bz#1158520)
+# Backport upstream fix http://trac.imagemagick.org/changeset/16765 - bz#1158520
 Patch1:		ImageMagick-6.8.6-CVE-2014-8354.patch
-# Backport upstream fix http://trac.imagemagick.org/changeset/16774#file0 (bz#1158524)
+# Backport upstream fix http://trac.imagemagick.org/changeset/16774#file0 - bz#1158524
 Patch2:		ImageMagick-6.8.6-CVE-2014-8355.patch
-
+# Backport upstream fix http://trac.imagemagick.org/changeset/17846 - bz#1195263
+Patch3:		ImageMagick-6.8.6-hdr-bz#1195263.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17854 - bz#1195265
+Patch4:		ImageMagick-6.8.6-miff-bz#1195265.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17855 - bz#1195269
+Patch5:		ImageMagick-6.8.6-pdb-bz#1195269.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17856 - bz#1195271
+Patch6:		ImageMagick-6.8.6-vicar-bz#1195271.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
@@ -143,6 +150,10 @@ however.
 %patch0 -p4 -b .cve
 %patch1 -p3 -b .cve-2014-5354
 %patch2 -p1 -b .cve-2014-5355
+%patch3 -p4 -b .hdr
+%patch4 -p1 -b .miff
+%patch5 -p4 -b .pdb
+%patch6 -p4 -b .vicar
 
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
@@ -331,6 +342,17 @@ rm -rf %{buildroot}
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Tue Mar 10 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.6.3-6
+- Fix 4 more security bugs:
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17846 - bz#1195263
+		Add Patch3: ImageMagick-6.8.6-hdr-bz#1195263.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17854 - bz#1195265
+		Add Patch4: ImageMagick-6.8.6-miff-bz#1195265.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17855 - bz#1195269
+		Add Patch5: ImageMagick-6.8.6-pdb-bz#1195269.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17856 - bz#1195271
+		Add Patch6: ImageMagick-6.8.6-vicar-bz#1195271.patch
+
 * Mon Mar 09 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.6.3-5
 - Backport upstream fix http://trac.imagemagick.org/changeset/16765 (bz#1158520) for CVE-2014-8354
 	Add Patch1: ImageMagick-6.8.7-CVE-2014-8354.patch
