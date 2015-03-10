@@ -3,7 +3,7 @@
 
 Name:		ImageMagick
 Version:		%{VER}.%{Patchlevel}
-Release:		4%{?dist}
+Release:		5%{?dist}
 Summary:		An X application for displaying and manipulating images
 Group:		Applications/Multimedia
 License:		ImageMagick
@@ -14,6 +14,11 @@ Requires:		%{name}-libs = %{version}-%{release}
 
 # CVE bug fix backporting: http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=25128&sid=ff40ad66b1f845c767aa77c7e32f9f9c&p=109901#p109901
 Patch0:		ImageMagick-6.8.7-psd-CVE.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/16765 (bz#1158520)
+Patch1:		ImageMagick-6.8.6-CVE-2014-8354.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/16774#file0 (bz#1158524)
+Patch2:		ImageMagick-6.8.6-CVE-2014-8355.patch
+
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
@@ -136,6 +141,8 @@ however.
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
 %patch0 -p4 -b .cve
+%patch1 -p3 -b .cve-2014-5354
+%patch2 -p1 -b .cve-2014-5355
 
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
@@ -324,6 +331,12 @@ rm -rf %{buildroot}
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon Mar 09 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.6.3-5
+- Backport upstream fix http://trac.imagemagick.org/changeset/16765 (bz#1158520) for CVE-2014-8354
+	Add Patch1: ImageMagick-6.8.7-CVE-2014-8354.patch
+- Backport upstream fix http://trac.imagemagick.org/changeset/16774 (bz#1158524) for CVE-2014-8355
+	Add Patch2: ImageMagick-6.8.6-CVE-2014-8355.patch
+
 * Thu Apr 3 2014 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.6.3-4
 - Build 6.8.6-3 version because soname bump happened in newer.
 - Concretize soname versioning.
