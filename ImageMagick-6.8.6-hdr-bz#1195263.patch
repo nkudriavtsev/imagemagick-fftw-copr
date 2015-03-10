@@ -1,0 +1,69 @@
+Index: ImageMagick/branches/ImageMagick-6/ChangeLog
+===================================================================
+--- a/ImageMagick/branches/ImageMagick-6/ChangeLog
++++ b/ImageMagick/branches/ImageMagick-6/ChangeLog
+@@ -1,6 +1,8 @@
+ 2013-07-01  6.8.6-3 Cristy  <quetzlzacatenango@image...>
+   * New version 6.8.6-3, SVN revision 12579.
+ 
++  * Fixed infinite loop in HDR reader (reference
++    http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=26929).
+ 2013-06-26  6.8.6-3 Cristy  <quetzlzacatenango@image...>
+   * Improve HCL to RGB roundtrip (reference
+     http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=22384).
+
+Index: ImageMagick/branches/ImageMagick-6/coders/hdr.c
+===================================================================
+--- a/ImageMagick/branches/ImageMagick-6/coders/hdr.c
++++ b/ImageMagick/branches/ImageMagick-6/coders/hdr.c
+@@ -275,5 +275,5 @@
+             continue;
+           p=value;
+-          while ((c != '\n') && (c != '\0'))
++          while ((c != '\n') && (c != '\0') && (c != EOF))
+           {
+             if ((size_t) (p-value) < (MaxTextExtent-1))
+@@ -320,16 +320,18 @@
+                     white_point[2];
+ 
+-                  (void) sscanf(value,"%g %g %g %g %g %g %g %g",
+-                    &chromaticity[0],&chromaticity[1],&chromaticity[2],
+-                    &chromaticity[3],&chromaticity[4],&chromaticity[5],
+-                    &white_point[0],&white_point[1]);
+-                  image->chromaticity.red_primary.x=chromaticity[0];
+-                  image->chromaticity.red_primary.y=chromaticity[1];
+-                  image->chromaticity.green_primary.x=chromaticity[2];
+-                  image->chromaticity.green_primary.y=chromaticity[3];
+-                  image->chromaticity.blue_primary.x=chromaticity[4];
+-                  image->chromaticity.blue_primary.y=chromaticity[5];
+-                  image->chromaticity.white_point.x=white_point[0],
+-                  image->chromaticity.white_point.y=white_point[1];
++                  if (sscanf(value,"%g %g %g %g %g %g %g %g",&chromaticity[0],
++                      &chromaticity[1],&chromaticity[2],&chromaticity[3],
++                      &chromaticity[4],&chromaticity[5],&white_point[0],
++                      &white_point[1]) == 8)
++                    {
++                      image->chromaticity.red_primary.x=chromaticity[0];
++                      image->chromaticity.red_primary.y=chromaticity[1];
++                      image->chromaticity.green_primary.x=chromaticity[2];
++                      image->chromaticity.green_primary.y=chromaticity[3];
++                      image->chromaticity.blue_primary.x=chromaticity[4];
++                      image->chromaticity.blue_primary.y=chromaticity[5];
++                      image->chromaticity.white_point.x=white_point[0],
++                      image->chromaticity.white_point.y=white_point[1];
++                    }
+                   break;
+                 }
+@@ -350,7 +352,9 @@
+                     width;
+ 
+-                  (void) sscanf(value,"%d +X %d",&height,&width);
+-                  image->columns=(size_t) width;
+-                  image->rows=(size_t) height;
++                  if (sscanf(value,"%d +X %d",&height,&width) == 2)
++                    {
++                      image->columns=(size_t) width;
++                      image->rows=(size_t) height;
++                    }
+                   break;
+                 }

@@ -3,7 +3,7 @@
 
 Name:		ImageMagick
 Version:		%{VER}.%{Patchlevel}
-Release:		8%{?dist}
+Release:		9%{?dist}
 Summary:		An X application for displaying and manipulating images
 Group:		Applications/Multimedia
 License:		ImageMagick
@@ -12,9 +12,22 @@ Source0:		ftp://ftp.ImageMagick.org/pub/%{name}/%{name}-%{VER}-%{Patchlevel}.tar
 
 Requires:		%{name}-libs = %{version}-%{release}
 
+# Backport upstream fix http://trac.imagemagick.org/changeset/16765 - bz#1158520
+Patch1:		ImageMagick-6.8.6-CVE-2014-8354.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/16774 - bz#1158524
+Patch2:		ImageMagick-6.8.6-CVE-2014-8355.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17846 - bz#1195263
+Patch3:		ImageMagick-6.8.6-hdr-bz#1195263.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17854 - bz#1195265
+Patch4:		ImageMagick-6.8.6-miff-bz#1195265.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17855 - bz#1195269
+Patch5:		ImageMagick-6.8.6-pdb-bz#1195269.patch
+# Backport upstream fix http://trac.imagemagick.org/changeset/17856 - bz#1195271
+Patch6:		ImageMagick-6.8.6-vicar-bz#1195271.patch
+
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
-BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
+BuildRequires:	libtiff-devel, zlib-devel, perl-devel >= 5.8.1
 BuildRequires:	ghostscript-devel, djvulibre-devel
 BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
 BuildRequires:	libX11-devel, libXext-devel, libXt-devel
@@ -132,6 +145,13 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
+%patch1 -p3 -b .cve-2014-5354
+%patch2 -p1 -b .cve-2014-5355
+%patch3 -p4 -b .hdr
+%patch4 -p1 -b .miff
+%patch5 -p4 -b .pdb
+%patch6 -p4 -b .vicar
+
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
 touch -r README.txt README.txt.tmp
@@ -319,6 +339,23 @@ rm -rf %{buildroot}
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Tue Mar 10 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.8.10-9
+- Merge fixes from f21 branch:
+	o Backport upstream fix http://trac.imagemagick.org/changeset/16765 (bz#1158520) for CVE-2014-8354
+		Add Patch1: ImageMagick-6.8.7-CVE-2014-8354.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/16774 (bz#1158524) for CVE-2014-8355
+		Add Patch2: ImageMagick-6.8.6-CVE-2014-8355.patch
+- Concretize soname versions.
+- Fix 4 more security bags:
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17846 - bz#1195263
+		Add Patch3: ImageMagick-6.8.6-hdr-bz#1195263.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17854 - bz#1195265
+		Add Patch4: ImageMagick-6.8.6-miff-bz#1195265.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17855 - bz#1195269
+		Add Patch5: ImageMagick-6.8.6-pdb-bz#1195269.patch
+	o Backport upstream fix http://trac.imagemagick.org/changeset/17856 - bz#1195271
+		Add Patch6: ImageMagick-6.8.6-vicar-bz#1195271.patch
+
 * Wed Nov 26 2014 Rex Dieter <rdieter@fedoraproject.org> 6.8.8.10-8
 - revert workaround
 
@@ -335,31 +372,17 @@ rm -rf %{buildroot}
 * Fri Jun 06 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.8.8.10-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Wed Apr 2 2014 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.8.10-3
-- Concretize soname versions.
-
-* Sat Mar 29 2014 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.8.10-2
-- Update to 6.8.8-10 with hope to fix CVE-2014-1958 (bz#1067276, bz#1067277, bz#1067278), CVE-2014-1947, CVE-2014-2030 (bz#1064098)
+* Thu Apr 3 2014 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.6.3-4
+- Build 6.8.6-3 version because soname bump happened in newer.
+- Concretize soname versioning.
+- Add Patch0: ImageMagick-6.8.7-psd-CVE.patch CVE bug fix backporting:
+	http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=25128&sid=ff40ad66b1f845c767aa77c7e32f9f9c&p=109901#p109901
+	for fix CVE-2014-1958 (bz#1067276, bz#1067277, bz#1067278), CVE-2014-1947, CVE-2014-2030 (bz#1064098)
 - Enable %%check by Alexander Todorov suggestion - bz#1076671.
 - Add %%{?_smp_mflags} into make install and check (not main compilation).
-
-* Mon Jan 6 2014 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.7.0-4
-- Drop BR giflib-devel (bz#1039378)
-
-* Thu Jan 02 2014 Orion Poplawski <orion@cora.nwra.com> - 6.8.7.0-3
-- Rebuild for libwebp soname bump
-
-* Wed Nov 27 2013 Rex Dieter <rdieter@fedoraproject.org> 6.8.7.0-2
-- rebuild (openexr)
-
-* Fri Nov 08 2013 Kyle McMartin <kyle@fedoraproject.org>
-- Use %__isa_bits instead of hardcoding the list of 64-bit architectures.
-
-* Mon Oct 7 2013 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.7.0-1
-- Update to 6.8.7-0 to fix badurl (http://www.mail-archive.com/devel@lists.fedoraproject.org/msg67796.html)
-
-* Sun Sep 08 2013 Rex Dieter <rdieter@fedoraproject.org> - 6.8.6.3-4
-- rebuild (openexr)
+- Porting some other non-destructive minor enhancments from master branch:
+	o Drop BR giflib-devel (bz#1039378)
+	o Use %%__isa_bits instead of hardcoding the list of 64-bit architectures.
 
 * Fri Aug 02 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.8.6.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild

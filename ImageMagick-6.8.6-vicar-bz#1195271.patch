@@ -1,0 +1,11 @@
+Index: ImageMagick/branches/ImageMagick-6/coders/vicar.c
+===================================================================
+--- a/ImageMagick/branches/ImageMagick-6/coders/vicar.c
++++ b/ImageMagick/branches/ImageMagick-6/coders/vicar.c
+@@ -276,4 +276,6 @@
+   {
+     c=ReadBlobByte(image);
++    if (c == EOF)
++      break;
+     count++;
+   }
