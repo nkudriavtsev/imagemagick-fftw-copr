@@ -1,0 +1,19 @@
+Index: ImageMagick/branches/ImageMagick-6/coders/pdb.c
+===================================================================
+--- a/ImageMagick/branches/ImageMagick-6/coders/pdb.c
++++ b/ImageMagick/branches/ImageMagick-6/coders/pdb.c
+@@ -372,5 +372,13 @@
+     }
+   num_pad_bytes = (size_t) (img_offset - TellBlob( image ));
+-  while (num_pad_bytes--) ReadBlobByte( image );
++  while (num_pad_bytes-- != 0)
++  {
++    int
++      c;
++
++    c=ReadBlobByte(image);
++    if (c == EOF)
++      break;
++  }
+   /*
+     Read image header.
