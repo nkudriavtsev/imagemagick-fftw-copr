@@ -1,0 +1,54 @@
+diff -ur ImageMagick-6.8.6-3.miff-orig/coders/miff.c ImageMagick-6.8.6-3/coders/miff.c
+--- ImageMagick-6.8.6-3.miff-orig/coders/miff.c	2013-05-17 22:58:19.000000000 +0400
++++ ImageMagick-6.8.6-3/coders/miff.c	2015-03-10 22:37:49.930865595 +0300
+@@ -1399,6 +1399,9 @@
+           bzip_info.avail_out=(unsigned int) (packet_size*image->columns);
+           do
+           {
++            int
++              code;
++
+             if (bzip_info.avail_in == 0)
+               {
+                 bzip_info.next_in=(char *) compress_pixels;
+@@ -1408,7 +1411,13 @@
+                 bzip_info.avail_in=(unsigned int) ReadBlob(image,length,
+                   (unsigned char *) bzip_info.next_in);
+               }
+-            if (BZ2_bzDecompress(&bzip_info) == BZ_STREAM_END)
++            code=BZ2_bzDecompress(&bzip_info);
++            if (code < 0)
++              {
++                status=MagickFalse;
++                break;
++              }
++            if (code == BZ_STREAM_END)
+               break;
+           } while (bzip_info.avail_out != 0);
+           (void) ImportQuantumPixels(image,(CacheView *) NULL,quantum_info,
+@@ -1455,6 +1464,9 @@
+           zip_info.avail_out=(uInt) (packet_size*image->columns);
+           do
+           {
++            int
++              code;
++
+             if (zip_info.avail_in == 0)
+               {
+                 zip_info.next_in=compress_pixels;
+@@ -1464,7 +1476,13 @@
+                 zip_info.avail_in=(unsigned int) ReadBlob(image,length,
+                   zip_info.next_in);
+               }
+-            if (inflate(&zip_info,Z_SYNC_FLUSH) == Z_STREAM_END)
++            code=inflate(&zip_info,Z_SYNC_FLUSH);
++            if (code < 0)
++              {
++                status=MagickFalse;
++                break;
++              }
++            if (code == Z_STREAM_END)
+               break;
+           } while (zip_info.avail_out != 0);
+           (void) ImportQuantumPixels(image,(CacheView *) NULL,quantum_info,
+Только в ImageMagick-6.8.6-3/coders: miff.c.orig
