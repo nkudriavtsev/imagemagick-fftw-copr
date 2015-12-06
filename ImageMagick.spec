@@ -361,13 +361,6 @@ make %{?_smp_mflags} check
 * Mon Apr 20 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.9.1.2-1
 - New version 6.9.1-2 - bz#1204371.
 
-* Mon Mar 09 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.9.0.10-1
-- New version 6.9.0-10 - bz#1197400.
-
-* Mon Feb 23 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.9.0.9-1
-- New version 6.9.0-9 - bz#1087263.
-- So-name bump: libMagick++-6.Q16.so.3 -> libMagick++-6.Q16.so.6 (ML: https://lists.fedoraproject.org/pipermail/devel/2015-March/208814.html)
-
 * Tue Mar 10 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.8.10-9
 - Merge fixes from f21 branch:
 	o Backport upstream fix http://trac.imagemagick.org/changeset/16765 (bz#1158520) for CVE-2014-8354
@@ -384,6 +377,13 @@ make %{?_smp_mflags} check
 		Add Patch5: ImageMagick-6.8.6-pdb-bz#1195269.patch
 	o Backport upstream fix http://trac.imagemagick.org/changeset/17856 - bz#1195271
 		Add Patch6: ImageMagick-6.8.6-vicar-bz#1195271.patch
+
+* Mon Mar 09 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.9.0.10-1
+- New version 6.9.0-10 - bz#1197400.
+
+* Mon Feb 23 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.9.0.9-1
+- New version 6.9.0-9 - bz#1087263.
+- So-name bump: libMagick++-6.Q16.so.3 -> libMagick++-6.Q16.so.6 (ML: https://lists.fedoraproject.org/pipermail/devel/2015-March/208814.html)
 
 * Wed Nov 26 2014 Rex Dieter <rdieter@fedoraproject.org> - 6.8.8.10-8
 - revert workaround
