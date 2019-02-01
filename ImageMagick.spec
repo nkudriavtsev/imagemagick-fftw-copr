@@ -10,7 +10,7 @@ Epoch:			1
 Epoch:			0
 %endif
 Version:		%{VER}.%{Patchlevel}
-Release:		4%{?dist}
+Release:		5%{?dist}
 Summary:		An X application for displaying and manipulating images
 Group:		Applications/Multimedia
 License:		ImageMagick
@@ -328,6 +328,9 @@ make %{?_smp_mflags} check
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Fri Feb 01 2019 Caolán McNamara <caolanm@redhat.com> - 1:6.9.9.38-5
+- Rebuilt for fixed libwmf soname
+
 * Fri Feb 01 2019 Björn Esser <besser82@fedoraproject.org> - 1:6.9.9.38-4
 - Rebuilt for libwmf soname bump
 
