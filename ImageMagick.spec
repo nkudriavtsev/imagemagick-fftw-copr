@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -317,6 +317,9 @@ make %{?_smp_mflags} check
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.10.28-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Thu May 30 2019 Jitka Plesnikova <jplesnik@redhat.com> - 1:6.9.10.28-3
 - Perl 5.30 rebuild
 
