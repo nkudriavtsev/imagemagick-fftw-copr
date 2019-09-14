@@ -1,5 +1,5 @@
 %global VER 6.9.10
-%global Patchlevel 28
+%global Patchlevel 64
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	4%{?dist}
+Release:	1%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -34,6 +34,10 @@ BuildRequires:	lcms2-devel, libxml2-devel, librsvg2-devel
 BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
 BuildRequires:	jbigkit-devel
 BuildRequires:	openjpeg2-devel >= 2.1.0
+BuildRequires:  graphviz-devel >= 2.9.0
+BuildRequires:  libraqm-devel
+BuildRequires:  liblqr-1-devel
+BuildRequires:  LibRaw-devel >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
 
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
@@ -158,6 +162,8 @@ cp -p Magick++/demo/*.cpp Magick++/demo/*.miff Magick++/examples
 
 %build
 autoconf -f -i
+# Reduce thread contention, upstream sets this flag for Linux hosts
+export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
 %configure \
 	--enable-shared \
 	--disable-static \
@@ -176,7 +182,11 @@ autoconf -f -i
 	--without-dps \
 	--without-gcc-arch \
 	--with-jbig \
-	--with-openjp2
+	--with-openjp2 \
+	--with-raw \
+	--with-lqr \
+	--with-gvc \
+	--with-raqm
 
 # Do *NOT* use %%{?_smp_mflags}, this causes PerlMagick to be silently misbuild
 make
@@ -238,12 +248,10 @@ multilibFileVersions %{buildroot}%{_includedir}/%{name}-6/magick/magick-baseconf
 multilibFileVersions %{buildroot}%{_includedir}/%{name}-6/magick/version.h
 
 
-# Fonts must be packaged separately. It does not have matter and demos work without it.
-rm PerlMagick/demo/Generic.ttf
-
 %check
 export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 make %{?_smp_mflags} check
+rm PerlMagick/demo/Generic.ttf
 
 %ldconfig_scriptlets libs
 %ldconfig_scriptlets c++
@@ -317,6 +325,11 @@ make %{?_smp_mflags} check
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Fri Sep 13 2019 Michael Cronenworth <mike@cchtml.com> - 1:6.9.10.64-1
+- Update to 6.9.10.64
+- Set threading option (https://src.fedoraproject.org/rpms/ImageMagick/pull-request/2)
+- Enable more image formats (RHBZ#1485823)
+
 * Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.10.28-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
