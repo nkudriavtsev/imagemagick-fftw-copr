@@ -35,7 +35,8 @@ BuildRequires:  liblqr-1-devel
 BuildRequires:  libraqm-devel
 %else
 %ifarch %{ix86} x86_64 %{power64}
-BuildRequires:  LibRaw-devel >= 0.14.8 # not in EPEL aarch64/s390x
+# not in EPEL aarch64/s390x
+BuildRequires:  LibRaw-devel >= 0.14.8
 %endif
 %endif
 BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
