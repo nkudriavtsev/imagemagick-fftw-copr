@@ -27,7 +27,12 @@ BuildRequires:	libgs-devel, ghostscript-x11
 %else
 BuildRequires:	ghostscript-devel
 %endif
+%if 0%{?fedora}
+# These are not available in EPEL
 BuildRequires:	djvulibre-devel
+BuildRequires:  liblqr-1-devel
+BuildRequires:  libraqm-devel
+%endif
 BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
 BuildRequires:	libX11-devel, libXext-devel, libXt-devel
 BuildRequires:	lcms2-devel, libxml2-devel, librsvg2-devel
@@ -35,8 +40,6 @@ BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
 BuildRequires:	jbigkit-devel
 BuildRequires:	openjpeg2-devel >= 2.1.0
 BuildRequires:  graphviz-devel >= 2.9.0
-BuildRequires:  libraqm-devel
-BuildRequires:  liblqr-1-devel
 BuildRequires:  LibRaw-devel >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
 
@@ -89,6 +92,7 @@ Summary: ImageMagick libraries to link with
 This packages contains a shared libraries to use within other applications.
 
 
+%if 0%{?fedora}
 %package djvu
 Summary: DjVu plugin for ImageMagick
 Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
@@ -96,6 +100,7 @@ Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 %description djvu
 This packages contains a plugin for ImageMagick which makes it possible to
 save and load DjvU files from ImageMagick and libMagickCore using applications.
+%endif
 
 
 %package doc
@@ -184,9 +189,13 @@ export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
 	--with-jbig \
 	--with-openjp2 \
 	--with-raw \
+%if 0%{?fedora}
 	--with-lqr \
 	--with-gvc \
 	--with-raqm
+%else
+	--with-gvc
+%endif
 
 # Do *NOT* use %%{?_smp_mflags}, this causes PerlMagick to be silently misbuild
 make
@@ -295,8 +304,10 @@ rm PerlMagick/demo/Generic.ttf
 %{_mandir}/man1/Wand-config.*
 %{_mandir}/man1/MagickWand-config.*
 
+%if 0%{?fedora}
 %files djvu
 %{_libdir}/%{name}-%{VER}/modules-Q16/coders/djvu.*
+%endif
 
 %files doc
 %doc %{_datadir}/doc/%{name}-6
