@@ -29,9 +29,14 @@ BuildRequires:	ghostscript-devel
 %endif
 %if 0%{?fedora}
 # These are not available in EPEL
+BuildRequires:  LibRaw-devel >= 0.14.8
 BuildRequires:	djvulibre-devel
 BuildRequires:  liblqr-1-devel
 BuildRequires:  libraqm-devel
+%else
+%ifarch %{ix86} x86_64 %{power64}
+BuildRequires:  LibRaw-devel >= 0.14.8 # not in EPEL aarch64/s390x
+%endif
 %endif
 BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
 BuildRequires:	libX11-devel, libXext-devel, libXt-devel
@@ -40,7 +45,6 @@ BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
 BuildRequires:	jbigkit-devel
 BuildRequires:	openjpeg2-devel >= 2.1.0
 BuildRequires:  graphviz-devel >= 2.9.0
-BuildRequires:  LibRaw-devel >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
 
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
@@ -188,12 +192,15 @@ export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
 	--without-gcc-arch \
 	--with-jbig \
 	--with-openjp2 \
-	--with-raw \
 %if 0%{?fedora}
+	--with-raw \
 	--with-lqr \
 	--with-gvc \
 	--with-raqm
 %else
+%ifarch %{ix86} x86_64 %{power64}
+	--with-raw \
+%endif
 	--with-gvc
 %endif
 
