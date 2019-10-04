@@ -1,5 +1,5 @@
 %global VER 6.9.10
-%global Patchlevel 65
+%global Patchlevel 67
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -344,6 +344,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Fri Oct 04 2019 Pete Walter <pwalter@fedoraproject.org> - 1:6.9.10.67-1
+- Update to 6.9.10.67
+
 * Sat Sep 21 2019 Pete Walter <pwalter@fedoraproject.org> - 1:6.9.10.65-1
 - Update to 6.9.10.65
 
