@@ -1,5 +1,5 @@
 %global VER 6.9.10
-%global Patchlevel 75
+%global Patchlevel 86
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -325,6 +325,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon Jan 13 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.10.86-1
+- Update to 6.9.10.86
+
 * Tue Nov 26 2019 Michael Cronenworth <mike@cchtml.com> - 1:6.9.10.75-1
 - Update to 6.9.10.75
 
