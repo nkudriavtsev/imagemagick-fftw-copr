@@ -32,7 +32,6 @@ BuildRequires:	ghostscript-devel
 BuildRequires:  LibRaw-devel >= 0.14.8
 BuildRequires:	djvulibre-devel
 BuildRequires:  liblqr-1-devel
-BuildRequires:  libraqm-devel
 %else
 %ifarch %{ix86} x86_64 %{power64}
 # not in EPEL aarch64/s390x
@@ -46,6 +45,7 @@ BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
 BuildRequires:	jbigkit-devel
 BuildRequires:	openjpeg2-devel >= 2.1.0
 BuildRequires:  graphviz-devel >= 2.9.0
+BuildRequires:  libraqm-devel
 BuildRequires:	autoconf automake gcc gcc-c++
 
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
