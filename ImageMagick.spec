@@ -1,5 +1,5 @@
-%global VER 6.9.10
-%global Patchlevel 86
+%global VER 6.9.11
+%global Patchlevel 16
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -10,14 +10,12 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	3%{?dist}
+Release:	1%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
 Url:		http://www.imagemagick.org/
 Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
-
-Patch0:		ImageMagick-6.9.9-3-multiarch-implicit-pkgconfig-dir.patch
 
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
 BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
@@ -61,14 +59,6 @@ ImageMagick-devel as well.
 %package devel
 Summary:	Library links and header files for ImageMagick app development
 Requires:	%{name}%{?_isa} = %{epoch}:%{version}-%{release}
-%if 0%{?fedora} > 27
-Requires:	libgs-devel
-%else
-Requires:	ghostscript-devel
-%endif
-Requires:	libX11-devel, libXext-devel, libXt-devel
-Requires:	bzip2-devel, freetype-devel, libtiff-devel, libjpeg-devel, lcms2-devel
-Requires:	libwebp-devel, OpenEXR-devel, jasper-devel, pkgconfig
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description devel
@@ -151,9 +141,6 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
-
-%patch0 -p1 -b .multiarch-implicit-pkgconfig-dir
-
 
 # for %%doc
 mkdir Magick++/examples
@@ -325,6 +312,10 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Wed Jun 03 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.16-1
+- Update to 6.9.11.16
+- Drop extra BRs on -devel package (RHBZ#1835344)
+
 * Mon May 11 2020 Gwyn Ciesla <gwync@protonmail.com> - 1:6.9.10.86-3
 - Rebuild for new LibRaw
 
