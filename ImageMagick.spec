@@ -1,5 +1,5 @@
 %global VER 6.9.11
-%global Patchlevel 16
+%global Patchlevel 21
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -32,10 +32,10 @@ BuildRequires:	lcms2-devel, libxml2-devel, librsvg2-devel
 BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
 BuildRequires:	jbigkit-devel
 BuildRequires:	openjpeg2-devel >= 2.1.0
-BuildRequires:  graphviz-devel >= 2.9.0
-BuildRequires:  libraqm-devel
-BuildRequires:  liblqr-1-devel
-BuildRequires:  LibRaw-devel >= 0.14.8
+BuildRequires:	graphviz-devel >= 2.9.0
+BuildRequires:	libraqm-devel
+BuildRequires:	liblqr-1-devel
+BuildRequires:	LibRaw-devel >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
 
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
@@ -312,6 +312,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Thu Jun 25 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.21-1
+- Update to 6.9.11.21
+
 * Mon Jun 22 2020 Jitka Plesnikova <jplesnik@redhat.com> - 1:6.9.11.16-2
 - Perl 5.32 rebuild
 
