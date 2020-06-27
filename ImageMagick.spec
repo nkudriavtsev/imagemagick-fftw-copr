@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -312,6 +312,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sat Jun 27 2020 Jitka Plesnikova <jplesnik@redhat.com> - 1:6.9.11.21-2
+- Perl 5.32 re-rebuild updated packages
+
 * Thu Jun 25 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.21-1
 - Update to 6.9.11.21
 
