@@ -10,12 +10,15 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
 Url:		http://www.imagemagick.org/
 Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
+# https://github.com/rmagick/rmagick/issues/1224
+# https://github.com/ImageMagick/ImageMagick6/commit/4c93a9feb75cd18ff11ae96907c2b5663eb58200
+Patch1:	%{name}-6.9.11.22-permit-reading-of-MPRI-images.patch
 
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
 BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
@@ -141,6 +144,7 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
+%patch1 -p1
 
 # for %%doc
 mkdir Magick++/examples
@@ -312,6 +316,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Thu Jul  2 2020 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1:6.9.11.22-2
+- Backport upstream patch to make ruby rmagick test pass (bug 1844192)
+
 * Mon Jun 29 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.22-1
 - Update to 6.9.11.22
 
