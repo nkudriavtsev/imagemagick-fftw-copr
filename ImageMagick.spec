@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -316,6 +316,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.11.22-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Thu Jul  2 2020 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1:6.9.11.22-2
 - Backport upstream patch to make ruby rmagick test pass (bug 1844192)
 
