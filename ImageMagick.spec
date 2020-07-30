@@ -184,7 +184,7 @@ make
 
 
 %install
-make %{?_smp_mflags} install DESTDIR=%{buildroot} INSTALL="install -p"
+%make_install
 cp -a www/source %{buildroot}%{_datadir}/doc/%{name}-%{VER}
 # Delete *ONLY* _libdir/*.la files! .la files used internally to handle plugins - BUG#185237!!!
 rm %{buildroot}%{_libdir}/*.la
@@ -241,7 +241,7 @@ multilibFileVersions %{buildroot}%{_includedir}/%{name}-6/magick/version.h
 
 %check
 export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
-make %{?_smp_mflags} check
+%make_build check
 rm PerlMagick/demo/Generic.ttf
 
 %ldconfig_scriptlets libs
