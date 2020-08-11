@@ -1,5 +1,5 @@
 %global VER 6.9.11
-%global Patchlevel 22
+%global Patchlevel 27
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -10,15 +10,12 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	3%{?dist}
+Release:	1%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
 Url:		http://www.imagemagick.org/
 Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
-# https://github.com/rmagick/rmagick/issues/1224
-# https://github.com/ImageMagick/ImageMagick6/commit/4c93a9feb75cd18ff11ae96907c2b5663eb58200
-Patch1:	%{name}-6.9.11.22-permit-reading-of-MPRI-images.patch
 
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
 BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
@@ -144,7 +141,6 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
-%patch1 -p1
 
 # for %%doc
 mkdir Magick++/examples
@@ -316,6 +312,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Tue Aug 11 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.27-1
+- Update to 6.9.11.27
+
 * Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.11.22-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
