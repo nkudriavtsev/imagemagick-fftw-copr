@@ -37,6 +37,7 @@ BuildRequires:	libraqm-devel
 BuildRequires:	liblqr-1-devel
 BuildRequires:	LibRaw-devel >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
+BuildRequires: make
 
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
