@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -29,7 +29,12 @@ BuildRequires:	djvulibre-devel
 BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
 BuildRequires:	libX11-devel, libXext-devel, libXt-devel
 BuildRequires:	lcms2-devel, libxml2-devel, librsvg2-devel
-BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
+%if 0%{?fedora} > 34
+BuildRequires:  openexr-devel
+%else
+BuildRequires:	ilmbase-devel, OpenEXR-devel
+%endif
+BuildRequires:	fftw-devel, libwebp-devel
 BuildRequires:	jbigkit-devel
 BuildRequires:	openjpeg2-devel >= 2.1.0
 BuildRequires:	graphviz-devel >= 2.9.0
@@ -37,7 +42,7 @@ BuildRequires:	libraqm-devel
 BuildRequires:	liblqr-1-devel
 BuildRequires:	LibRaw-devel >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
-BuildRequires: make
+BuildRequires:  make
 
 Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
@@ -313,6 +318,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Tue Aug 10 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-6
+- Rebuild for OpenEXR/Imath 3.
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.11.27-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
