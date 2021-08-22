@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -318,6 +318,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun Aug 22 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-7
+- Rebuild for OpenEXR/Imath 3.1.
+
 * Tue Aug 10 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-6
 - Rebuild for OpenEXR/Imath 3.
 
