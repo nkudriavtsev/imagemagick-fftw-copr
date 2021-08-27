@@ -10,12 +10,17 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
 Url:		http://www.imagemagick.org/
 Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
+
+# Fix segfaults on s390x with rubygem-acitvestorage test suite.
+# https://bugzilla.redhat.com/show_bug.cgi?id=1993193
+# https://github.com/ImageMagick/ImageMagick6/commit/112051a709f83f13ca2b9ab63007d4a41b0a9beb
+Patch0:		ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
 
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
 BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
@@ -147,6 +152,8 @@ however.
 
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
+
+%patch0 -p1
 
 # for %%doc
 mkdir Magick++/examples
@@ -318,6 +325,10 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Fri Aug 27 2021 Vít Ondruch <vondruch@redhat.com> - 1:6.9.11.27-8
+- Fix segfaults on s390x with rubygem-acitvestorage test suite.
+  Resolves: rhbz#1993193
+
 * Sun Aug 22 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-7
 - Rebuild for OpenEXR/Imath 3.1.
 
