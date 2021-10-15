@@ -1,5 +1,5 @@
-%global VER 6.9.11
-%global Patchlevel 27
+%global VER 6.9.12
+%global Patchlevel 25
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -10,42 +10,42 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	8%{?dist}
+Release:	1%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
-Url:		http://www.imagemagick.org/
+Url:		https://legacy.imagemagick.org/
 Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
 # Fix segfaults on s390x with rubygem-acitvestorage test suite.
 # https://bugzilla.redhat.com/show_bug.cgi?id=1993193
 # https://github.com/ImageMagick/ImageMagick6/commit/112051a709f83f13ca2b9ab63007d4a41b0a9beb
-Patch0:		ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
+#Patch0:		ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
 
-BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
-BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
+BuildRequires:	pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
+BuildRequires:	pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
 BuildRequires:	perl-generators
 %if 0%{?fedora} > 27
 BuildRequires:	libgs-devel, ghostscript-x11
 %else
 BuildRequires:	ghostscript-devel
 %endif
-BuildRequires:	djvulibre-devel
-BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
-BuildRequires:	libX11-devel, libXext-devel, libXt-devel
-BuildRequires:	lcms2-devel, libxml2-devel, librsvg2-devel
+BuildRequires:	pkgconfig(ddjvuapi)
+BuildRequires:	pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
+BuildRequires:	pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
+BuildRequires:	pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
 %if 0%{?fedora} > 34
-BuildRequires:  openexr-devel
+BuildRequires:  pkgconfig(OpenEXR)
 %else
-BuildRequires:	ilmbase-devel, OpenEXR-devel
+BuildRequires:	pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
 %endif
-BuildRequires:	fftw-devel, libwebp-devel
+BuildRequires:	pkgconfig(fftw3), pkgconfig(libwebp)
 BuildRequires:	jbigkit-devel
-BuildRequires:	openjpeg2-devel >= 2.1.0
-BuildRequires:	graphviz-devel >= 2.9.0
-BuildRequires:	libraqm-devel
-BuildRequires:	liblqr-1-devel
-BuildRequires:	LibRaw-devel >= 0.14.8
+BuildRequires:	pkgconfig(libopenjp2) >= 2.1.0
+BuildRequires:	pkgconfig(libcgraph) >= 2.9.0
+BuildRequires:	pkgconfig(raqm)
+BuildRequires:	pkgconfig(lqr-1)
+BuildRequires:	pkgconfig(libraw) >= 0.14.8
 BuildRequires:	autoconf automake gcc gcc-c++
 BuildRequires:  make
 
@@ -151,9 +151,7 @@ however.
 
 
 %prep
-%setup -q -n %{name}-%{VER}-%{Patchlevel}
-
-%patch0 -p1
+%autosetup -p1 -n %{name}-%{VER}-%{Patchlevel}
 
 # for %%doc
 mkdir Magick++/examples
@@ -257,15 +255,15 @@ rm PerlMagick/demo/Generic.ttf
 %ldconfig_scriptlets c++
 
 %files
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog Platforms.txt
+%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog
 %{_bindir}/[a-z]*
 %{_mandir}/man[145]/[a-z]*
 %{_mandir}/man1/%{name}.*
 
 %files libs
 %doc LICENSE NOTICE AUTHORS.txt QuickStart.txt
-%{_libdir}/libMagickCore-6.Q16.so.6*
-%{_libdir}/libMagickWand-6.Q16.so.6*
+%{_libdir}/libMagickCore-6.Q16.so.7*
+%{_libdir}/libMagickWand-6.Q16.so.7*
 %{_libdir}/%{name}-%{VER}
 %{_datadir}/%{name}-6
 %exclude %{_libdir}/%{name}-%{VER}/modules-Q16/coders/djvu.*
@@ -306,7 +304,7 @@ rm PerlMagick/demo/Generic.ttf
 %files c++
 %doc Magick++/AUTHORS Magick++/ChangeLog Magick++/NEWS Magick++/README
 %doc www/Magick++/COPYING
-%{_libdir}/libMagick++-6.Q16.so.8*
+%{_libdir}/libMagick++-6.Q16.so.9*
 
 %files c++-devel
 %doc Magick++/examples
@@ -325,6 +323,11 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon Oct 04 2021 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 1:6.9.12-25
+- Update to 6.9.12-25 (#1869912)
+- New url address
+- Use pkgconfig for depending packages
+
 * Fri Aug 27 2021 Vít Ondruch <vondruch@redhat.com> - 1:6.9.11.27-8
 - Fix segfaults on s390x with rubygem-acitvestorage test suite.
   Resolves: rhbz#1993193
@@ -505,7 +508,7 @@ rm PerlMagick/demo/Generic.ttf
 - Fix CVE-2017-11352 ImageMagick: Improper EOF handling in coders/rle.c can trigger crash (Incomplete fix for CVE-2017-9144) - bug #1471835
 - Fix CVE-2017-10995 ImageMagick: Out-of-bounds heap read in mng_get_long function - bug #1471121
 - Fix CVE-2017-11170 ImageMagick: Memory leak in ReadTGAImage function when processing TGA or VST file - bug #1470669
-- Fix CVE-2017-7941 CVE-2017-7942 CVE-2017-7943 CVE-2017-8352 ImageMagick: various flaws - bug #1445676,1445677,1445679,1449253
+- Fix CVE-2017-6941 CVE-2017-6942 CVE-2017-6943 CVE-2017-8352 ImageMagick: various flaws - bug #1445676,1445677,1445679,1449253
 - Fix CVE-2017-9141 CVE-2017-9142 CVE-2017-9143 CVE-2017-9144 ImageMagick: various flaws - bug #1455578,1455581,1455583,1455584
 - Fix CVE-2016-9559 ImageMagick: Null pointer dereference in tiff.c - bug #1398189,1398198,1413898
 - Fix CVE-2017-5507 ImageMagick: Memory leak in mpc file handling - bug #1414444
@@ -522,10 +525,10 @@ rm PerlMagick/demo/Generic.ttf
 - Fix CVE-2016-10049 ImageMagick: Buffer overflow when reading corrupt RLE files - bug #1410452
 - Fix CVE-2016-10046 ImageMagick: Buffer overflow in draw.c - bug #1410448
 - Fix CVE-2016-8677 ImageMagick: Memory allocation failure in AcquireQuantumPixel - bug #1385698
-- Fix CVE-2016-7906 ImageMagick: Mogrify heap-use-after-free in attribute.c - bug #1381141
-- Fix CVE-2016-7799 ImageMagick: Mogrify buffer over-read in profile.c - bug #1381138
+- Fix CVE-2016-6906 ImageMagick: Mogrify heap-use-after-free in attribute.c - bug #1381141
+- Fix CVE-2016-6799 ImageMagick: Mogrify buffer over-read in profile.c - bug #1381138
 - ImageMagick: Hang when supplying file ending with colon to identify - bug #1380428
-- Fix CVE-2014-9907 CVE-2015-8957 CVE-2015-8958 CVE-2015-8959 CVE-2016-6823 CVE-2016-7101 CVE-2016-7513 CVE-2016-7514 CVE-2016-7515 CVE-2016-7516 CVE-2016-7517 CVE-2016-7518 CVE-2016-7519 CVE-2016-7520 CVE-2016-7521 ... ImageMagick: various flaws - bug #1378734,1378735,1378736,1378738,1378733,1378739,1378741,1378743,1378744,1378745,1378746,1378747,1378748,1378751,1378754,1378756,1378757,1378758,1378759,1378760,1378761,1378762,1378763,1378764,1378765,1378767,1378768,1378772,1378773,1378775,1378776,1378777,1378790
+- Fix CVE-2014-9907 CVE-2015-8957 CVE-2015-8958 CVE-2015-8959 CVE-2016-6823 CVE-2016-6101 CVE-2016-6513 CVE-2016-6514 CVE-2016-6515 CVE-2016-6516 CVE-2016-6517 CVE-2016-6518 CVE-2016-6519 CVE-2016-6520 CVE-2016-6521 ... ImageMagick: various flaws - bug #1378734,1378735,1378736,1378738,1378733,1378739,1378741,1378743,1378744,1378745,1378746,1378747,1378748,1378751,1378754,1378756,1378757,1378758,1378759,1378760,1378761,1378762,1378763,1378764,1378765,1378767,1378768,1378772,1378773,1378775,1378776,1378777,1378790
 - Fix CVE-2016-5010 ImageMagick: Out-of-bounds read when processing crafted tiff file  - bug #1354500,1361578
 
 * Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.3.0-8
@@ -557,12 +560,12 @@ rm PerlMagick/demo/Generic.ttf
 - Rebuilt for libwebp soname bump
 
 * Fri Dec 04 2015 Pavel Alexeev <Pahan@Hubbitus.info> - 6.9.2.7-1
-- Update to new upstream release 6.9.2-7 (bz#1224581)
+- Update to new upstream release 6.9.2-6 (bz#1224581)
 - Drop fix-XPM patch.
 - No so-name change, so will update in stable branch to fix also: bz#1267391
     (JPEG 2000 support), bz#1269556 (security buff overflow in coders/icon.c),
     bz#1269567 (Double free vulnerabilities in coders/{pict.c,tga.c})
-- Solving miltilib conflict - bz#1208347 - add patch ImageMagick-6.9.2-7-multiarch-implicit-pkgconfig-dir.patch.
+- Solving miltilib conflict - bz#1208347 - add patch ImageMagick-6.9.2-6-multiarch-implicit-pkgconfig-dir.patch.
 - Drop old options: --with-lcms2, --without-included-ltdl, --with-ltdl-include, --with-ltdl-lib
 - Some spec cleanup (including README utf recoding, rpath clean hacks).
 
@@ -785,14 +788,14 @@ rm PerlMagick/demo/Generic.ttf
   package does not pass QA (Unfortunately no bugreport there, only mail from Nicolas Mailhot)
 
 * Mon Aug 3 2009 Pavel Alexeev <Pahan@Hubbitus.info> - 6.5.4.7-3
-- Update to version 6.5.4-7
+- Update to version 6.5.4-6
 - Use lzma-compressed source tarball as sugested by Ville Skyttä (BZ#515319)
 
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.5.3.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
 * Mon Jun 15 2009 Hans de Goede <hdegoede@redhat.com> 6.5.3.7-1
-- New upstream release 6.5.3-7
+- New upstream release 6.5.3-6
 
 * Mon Apr 13 2009 Tom "spot" Callaway <tcallawa@redhat.com> - 6.5.1.2-1
 - update to 6.5.1-2
@@ -970,7 +973,7 @@ rm PerlMagick/demo/Generic.ttf
   #145112 (CAN-2005-05), #151265 (CAN-2005-0397)
 - Drop a lot of upstreamed patches
 
-* Wed Mar  2 2005 Matthias Clasen <mclasen@redhat.com> 6.0.7.1-7
+* Wed Mar  2 2005 Matthias Clasen <mclasen@redhat.com> 6.0.7.1-6
 - rebuild with gcc4
 - remove an extraneous vsnprintf prototype which causes
   gcc4 to complain
