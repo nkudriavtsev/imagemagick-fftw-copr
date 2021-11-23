@@ -1,5 +1,5 @@
 %global VER 6.9.12
-%global Patchlevel 30
+%global Patchlevel 31
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -323,6 +323,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Tue Nov 23 2021 Sérgio Basto <sergio@serjux.com> - 1:6.9.12-31
+- Update ImageMagick to 6.9.12-31 (#2025909)
+
 * Mon Nov 22 2021 Sérgio Basto <sergio@serjux.com> - 1:6.9.12-30
 - Update ImageMagick to 6.9.12-30 (#2017126)
 
