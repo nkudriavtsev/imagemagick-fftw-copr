@@ -10,7 +10,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -323,6 +323,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.12.32-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Mon Dec 06 2021 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12-32
 - Update to 6.9.12-32 (#2029637)
 
