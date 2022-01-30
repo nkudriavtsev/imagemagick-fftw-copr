@@ -1,5 +1,5 @@
 %global VER 6.9.12
-%global Patchlevel 32
+%global Patchlevel 37
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -323,6 +323,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sat Jan 29 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.37-1
+- Update to 6.9.12.37 (#2034280)
+        
 * Mon Dec 06 2021 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12-32
 - Update to 6.9.12-32 (#2029637)
 
