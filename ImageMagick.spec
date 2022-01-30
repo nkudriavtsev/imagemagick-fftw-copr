@@ -1,5 +1,5 @@
 %global VER 6.9.12
-%global Patchlevel 32
+%global Patchlevel 37
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
@@ -12,7 +12,7 @@ Epoch:		1
 Epoch:		0
 %endif
 Version:	%{VER}.%{Patchlevel}
-Release:	3%{?dist}
+Release:	1%{?dist}
 Summary:	An X application for displaying and manipulating images
 
 License:	ImageMagick
@@ -325,6 +325,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sat Jan 29 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.37-1
+- Update to 6.9.12.37 (#2034280)
+        
 * Mon Jan 24 2022 Timm Bäder <tbaeder@redhat.com> - 1:6.9.12.32-3
 - Disable automatic .la file removal
 - https://fedoraproject.org/wiki/Changes/RemoveLaFiles
