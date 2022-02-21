@@ -1,5 +1,7 @@
 %global VER 6.9.12
-%global Patchlevel 32
+%global Patchlevel 40
+# Disable automatic .la file removal
+%global __brp_remove_la_files %nil
 
 Name:           ImageMagick
 %if 0%{?fedora} >= 27
@@ -49,7 +51,7 @@ BuildRequires:  pkgconfig(libraw) >= 0.14.8
 BuildRequires:  autoconf automake gcc gcc-c++
 BuildRequires:  make
 
-Requires:        %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description
 ImageMagick is an image display and manipulation tool for the X
@@ -69,8 +71,8 @@ ImageMagick-devel as well.
 
 %package devel
 Summary:        Library links and header files for ImageMagick app development
-Requires:        %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-Requires:        %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description devel
 ImageMagick-devel contains the library links and header files you'll
@@ -110,9 +112,9 @@ http://www.imagemagick.org/
 
 
 %package perl
-Summary: ImageMagick perl bindings
-Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Summary:        ImageMagick perl bindings
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description perl
 Perl bindings to ImageMagick.
@@ -122,8 +124,8 @@ ImageMagick.
 
 
 %package c++
-Summary: ImageMagick Magick++ library (C++ bindings)
-Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Summary:        ImageMagick Magick++ library (C++ bindings)
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description c++
 This package contains the Magick++ library, a C++ binding to the ImageMagick
@@ -133,9 +135,9 @@ Install ImageMagick-c++ if you want to use any applications that use Magick++.
 
 
 %package c++-devel
-Summary: C++ bindings for the ImageMagick library
-Requires: %{name}-c++%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
+Summary:        C++ bindings for the ImageMagick library
+Requires:       %{name}-c++%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description c++-devel
 ImageMagick-devel contains the static libraries and header files you'll
@@ -323,7 +325,20 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
-* Mon Dec 06 2021 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.32-1
+* Thu Feb 17 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.40-1
+- New upstream release 6.9.12-40 (#2051040)
+
+* Sat Jan 29 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.37-1
+- Update to 6.9.12.37 (#2034280)
+
+* Mon Jan 24 2022 Timm Bäder <tbaeder@redhat.com> - 1:6.9.12.32-3
+- Disable automatic .la file removal
+- https://fedoraproject.org/wiki/Changes/RemoveLaFiles
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.12.32-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Mon Dec 06 2021 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12-32
 - Update to 6.9.12-32 (#2029637)
 
 * Tue Nov 23 2021 Sérgio Basto <sergio@serjux.com> - 1:6.9.12-31
