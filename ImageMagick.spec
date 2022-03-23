@@ -257,7 +257,7 @@ rm PerlMagick/demo/Generic.ttf
 %ldconfig_scriptlets c++
 
 %files
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog
+%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog.md
 %{_bindir}/[a-z]*
 %{_mandir}/man[145]/[a-z]*
 %{_mandir}/man1/%{name}.*
