@@ -1,5 +1,5 @@
 %global VER 6.9.12
-%global Patchlevel 43
+%global Patchlevel 44
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
@@ -325,6 +325,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon Mar 28 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.44-1
+- New upstream release 6.9.12.44
+
 * Wed Mar 23 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.43-1
 - New upstream release 6.9.12.43
 
