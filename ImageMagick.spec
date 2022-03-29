@@ -1,5 +1,7 @@
-%global VER 6.9.10
-%global Patchlevel 86
+%global VER 6.9.12
+%global Patchlevel 44
+# Disable automatic .la file removal
+%global __brp_remove_la_files %nil
 
 Name:		ImageMagick
 %if 0%{?fedora} >= 27
@@ -17,7 +19,7 @@ License:	ImageMagick
 Url:		http://www.imagemagick.org/
 Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
-Patch0:		ImageMagick-6.9.9-3-multiarch-implicit-pkgconfig-dir.patch
+#Patch0:		ImageMagick-6.9.9-3-multiarch-implicit-pkgconfig-dir.patch
 
 BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
 BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
@@ -162,7 +164,7 @@ however.
 %prep
 %setup -q -n %{name}-%{VER}-%{Patchlevel}
 
-%patch0 -p1 -b .multiarch-implicit-pkgconfig-dir
+#%%patch0 -p1 -b .multiarch-implicit-pkgconfig-dir
 
 
 # for %%doc
@@ -274,15 +276,15 @@ rm PerlMagick/demo/Generic.ttf
 %ldconfig_scriptlets c++
 
 %files
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog Platforms.txt
+%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog.md
 %{_bindir}/[a-z]*
 %{_mandir}/man[145]/[a-z]*
 %{_mandir}/man1/%{name}.*
 
 %files libs
 %doc LICENSE NOTICE AUTHORS.txt QuickStart.txt
-%{_libdir}/libMagickCore-6.Q16.so.6*
-%{_libdir}/libMagickWand-6.Q16.so.6*
+%{_libdir}/libMagickCore-6.Q16.so.7*
+%{_libdir}/libMagickWand-6.Q16.so.7*
 %{_libdir}/%{name}-%{VER}
 %{_datadir}/%{name}-6
 %exclude %{_libdir}/%{name}-%{VER}/modules-Q16/coders/djvu.*
@@ -325,7 +327,7 @@ rm PerlMagick/demo/Generic.ttf
 %files c++
 %doc Magick++/AUTHORS Magick++/ChangeLog Magick++/NEWS Magick++/README
 %doc www/Magick++/COPYING
-%{_libdir}/libMagick++-6.Q16.so.8*
+%{_libdir}/libMagick++-6.Q16.so.9*
 
 %files c++-devel
 %doc Magick++/examples
@@ -344,6 +346,101 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon Mar 28 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.44-1
+- New upstream release 6.9.12.44
+
+* Wed Mar 23 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.43-1
+- New upstream release 6.9.12.43
+
+* Tue Mar 15 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.42-1
+- New upstream release 6.9.12.42
+
+* Thu Feb 17 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.40-1
+- New upstream release 6.9.12-40 (#2051040)
+
+* Sat Jan 29 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.37-1
+- Update to 6.9.12.37 (#2034280)
+
+* Mon Jan 24 2022 Timm Bäder <tbaeder@redhat.com> - 1:6.9.12.32-3
+- Disable automatic .la file removal
+- https://fedoraproject.org/wiki/Changes/RemoveLaFiles
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.12.32-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Mon Dec 06 2021 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12-32
+- Update to 6.9.12-32 (#2029637)
+
+* Tue Nov 23 2021 Sérgio Basto <sergio@serjux.com> - 1:6.9.12-31
+- Update ImageMagick to 6.9.12-31 (#2025909)
+
+* Mon Nov 22 2021 Sérgio Basto <sergio@serjux.com> - 1:6.9.12-30
+- Update ImageMagick to 6.9.12-30 (#2017126)
+
+* Sun Oct 31 2021 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 1:6.9.12-28
+- Update to 6.9.12-28 (resolves #2017126)
+
+* Tue Oct 26 2021 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 1:6.9.12-27
+- Update to 6.9.12-27 (#2017126)
+
+* Mon Oct 04 2021 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 1:6.9.12-25
+- Update to 6.9.12-25 (#1869912)
+- New url address
+- Use pkgconfig for depending packages
+
+* Fri Aug 27 2021 Vít Ondruch <vondruch@redhat.com> - 1:6.9.11.27-8
+- Fix segfaults on s390x with rubygem-acitvestorage test suite.
+  Resolves: rhbz#1993193
+
+* Sun Aug 22 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-7
+- Rebuild for OpenEXR/Imath 3.1.
+
+* Tue Aug 10 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-6
+- Rebuild for OpenEXR/Imath 3.
+
+* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.11.27-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 1:6.9.11.27-4
+- Perl 5.34 rebuild
+
+* Mon Jan 25 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.11.27-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Fri Jan 01 2021 Richard Shaw <hobbes1069@gmail.com> - 1:6.9.11.27-2
+- Rebuild for OpenEXR 2.5.3.
+
+* Tue Aug 11 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.27-1
+- Update to 6.9.11.27
+
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.11.22-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Thu Jul  2 2020 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1:6.9.11.22-2
+- Backport upstream patch to make ruby rmagick test pass (bug 1844192)
+
+* Mon Jun 29 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.22-1
+- Update to 6.9.11.22
+
+* Sat Jun 27 2020 Jitka Plesnikova <jplesnik@redhat.com> - 1:6.9.11.21-2
+- Perl 5.32 re-rebuild updated packages
+
+* Thu Jun 25 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.21-1
+- Update to 6.9.11.21
+
+* Mon Jun 22 2020 Jitka Plesnikova <jplesnik@redhat.com> - 1:6.9.11.16-2
+- Perl 5.32 rebuild
+
+* Wed Jun 03 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.11.16-1
+- Update to 6.9.11.16
+- Drop extra BRs on -devel package (RHBZ#1835344)
+
+* Mon May 11 2020 Gwyn Ciesla <gwync@protonmail.com> - 1:6.9.10.86-3
+- Rebuild for new LibRaw
+
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.10.86-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Mon Jan 13 2020 Michael Cronenworth <mike@cchtml.com> - 1:6.9.10.86-1
 - Update to 6.9.10.86
 
