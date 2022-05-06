@@ -17,7 +17,7 @@ Summary:        An X application for displaying and manipulating images
 
 License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
-Source0:        https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
+Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
 # Fix segfaults on s390x with rubygem-acitvestorage test suite.
 # https://bugzilla.redhat.com/show_bug.cgi?id=1993193
