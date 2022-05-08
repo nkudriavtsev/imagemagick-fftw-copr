@@ -22,7 +22,7 @@ Source0:        https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel
 # Fix segfaults on s390x with rubygem-acitvestorage test suite.
 # https://bugzilla.redhat.com/show_bug.cgi?id=1993193
 # https://github.com/ImageMagick/ImageMagick6/commit/112051a709f83f13ca2b9ab63007d4a41b0a9beb
-#Patch0:                ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
+#Patch0:        ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
 
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
@@ -36,7 +36,7 @@ BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
 BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
 BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
-%if 0%{?fedora} > 34
+%if 0%{?fedora} > 34 || 0%{?epel} > 8
 BuildRequires:  pkgconfig(OpenEXR)
 %else
 BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
@@ -339,7 +339,7 @@ rm PerlMagick/demo/Generic.ttf
 
 * Sat Jan 29 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.37-1
 - Update to 6.9.12.37 (#2034280)
-        
+
 * Mon Jan 24 2022 Timm Bäder <tbaeder@redhat.com> - 1:6.9.12.32-3
 - Disable automatic .la file removal
 - https://fedoraproject.org/wiki/Changes/RemoveLaFiles
