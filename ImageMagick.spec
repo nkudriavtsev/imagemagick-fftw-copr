@@ -1,56 +1,54 @@
-%global VER 6.9.12
-%global Patchlevel 44
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
-Name:		ImageMagick
+Name:           ImageMagick
 %if 0%{?fedora} >= 27
 # ImageMagick 7 was briefly sent to Fedora 27 and Rawhide in 2017;
 # the epoch was necessary to downgrade them back to 6.
-Epoch:		1
+Epoch:          1
 %else
-Epoch:		0
+Epoch:          0
 %endif
-Version:	%{VER}.%{Patchlevel}
-Release:	1%{?dist}
-Summary:	An X application for displaying and manipulating images
+Version:        6.9.12.48
+Release:        1%{?dist}
+Summary:        An X application for displaying and manipulating images
 
-License:	ImageMagick
-Url:		http://www.imagemagick.org/
-Source0:	https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
+%global VER %(foo=%{version}; echo ${foo:0:6})
+%global Patchlevel %(foo=%{version}; echo ${foo:7})
+License:        ImageMagick
+Url:            https://legacy.imagemagick.org/
+Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
-#Patch0:		ImageMagick-6.9.9-3-multiarch-implicit-pkgconfig-dir.patch
-
-BuildRequires:	bzip2-devel, freetype-devel, libjpeg-devel, libpng-devel
-BuildRequires:	libtiff-devel, giflib-devel, zlib-devel, perl-devel >= 5.8.1
-BuildRequires:	perl-generators
+BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
+BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
+BuildRequires:  perl-generators
 %if 0%{?fedora} > 27
-BuildRequires:	libgs-devel, ghostscript-x11
+BuildRequires:  libgs-devel, ghostscript-x11
 %else
-BuildRequires:	ghostscript-devel
+BuildRequires:  ghostscript-devel
 %endif
-%if 0%{?fedora}
-# These are not available in EPEL
-BuildRequires:  LibRaw-devel >= 0.14.8
-BuildRequires:	djvulibre-devel
-BuildRequires:  liblqr-1-devel
+BuildRequires:  pkgconfig(ddjvuapi)
+BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
+BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
+BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
+%if 0%{?fedora} > 34 || 0%{?epel} > 8
+BuildRequires:  pkgconfig(OpenEXR)
 %else
-%ifarch %{ix86} x86_64 %{power64}
-# not in EPEL aarch64/s390x
-BuildRequires:  LibRaw-devel >= 0.14.8
+BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
 %endif
+BuildRequires:  pkgconfig(fftw3), pkgconfig(libwebp)
+BuildRequires:  jbigkit-devel
+BuildRequires:  pkgconfig(libopenjp2) >= 2.1.0
+BuildRequires:  pkgconfig(libcgraph) >= 2.9.0
+BuildRequires:  pkgconfig(raqm)
+%ifnarch s390x
+# not in EPEL s390x
+BuildRequires:  pkgconfig(libraw) >= 0.14.8
 %endif
-BuildRequires:	libwmf-devel, jasper-devel, libtool-ltdl-devel
-BuildRequires:	libX11-devel, libXext-devel, libXt-devel
-BuildRequires:	lcms2-devel, libxml2-devel, librsvg2-devel
-BuildRequires:	fftw-devel, ilmbase-devel, OpenEXR-devel, libwebp-devel
-BuildRequires:	jbigkit-devel
-BuildRequires:	openjpeg2-devel >= 2.1.0
-BuildRequires:  graphviz-devel >= 2.9.0
-BuildRequires:  libraqm-devel
-BuildRequires:	autoconf automake gcc gcc-c++
+BuildRequires:  autoconf automake gcc gcc-c++
+BuildRequires:  make
 
-Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description
 ImageMagick is an image display and manipulation tool for the X
@@ -69,17 +67,9 @@ ImageMagick-devel as well.
 
 
 %package devel
-Summary:	Library links and header files for ImageMagick app development
-Requires:	%{name}%{?_isa} = %{epoch}:%{version}-%{release}
-%if 0%{?fedora} > 27
-Requires:	libgs-devel
-%else
-Requires:	ghostscript-devel
-%endif
-Requires:	libX11-devel, libXext-devel, libXt-devel
-Requires:	bzip2-devel, freetype-devel, libtiff-devel, libjpeg-devel, lcms2-devel
-Requires:	libwebp-devel, OpenEXR-devel, jasper-devel, pkgconfig
-Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Summary:        Library links and header files for ImageMagick app development
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description devel
 ImageMagick-devel contains the library links and header files you'll
@@ -99,7 +89,6 @@ Summary: ImageMagick libraries to link with
 This packages contains a shared libraries to use within other applications.
 
 
-%if 0%{?fedora}
 %package djvu
 Summary: DjVu plugin for ImageMagick
 Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
@@ -107,7 +96,6 @@ Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 %description djvu
 This packages contains a plugin for ImageMagick which makes it possible to
 save and load DjvU files from ImageMagick and libMagickCore using applications.
-%endif
 
 
 %package doc
@@ -121,9 +109,9 @@ http://www.imagemagick.org/
 
 
 %package perl
-Summary: ImageMagick perl bindings
-Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Summary:        ImageMagick perl bindings
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description perl
 Perl bindings to ImageMagick.
@@ -133,8 +121,8 @@ ImageMagick.
 
 
 %package c++
-Summary: ImageMagick Magick++ library (C++ bindings)
-Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Summary:        ImageMagick Magick++ library (C++ bindings)
+Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description c++
 This package contains the Magick++ library, a C++ binding to the ImageMagick
@@ -144,9 +132,9 @@ Install ImageMagick-c++ if you want to use any applications that use Magick++.
 
 
 %package c++-devel
-Summary: C++ bindings for the ImageMagick library
-Requires: %{name}-c++%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
+Summary:        C++ bindings for the ImageMagick library
+Requires:       %{name}-c++%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description c++-devel
 ImageMagick-devel contains the static libraries and header files you'll
@@ -162,10 +150,7 @@ however.
 
 
 %prep
-%setup -q -n %{name}-%{VER}-%{Patchlevel}
-
-#%%patch0 -p1 -b .multiarch-implicit-pkgconfig-dir
-
+%autosetup -p1 -n %{name}-%{VER}-%{Patchlevel}
 
 # for %%doc
 mkdir Magick++/examples
@@ -177,42 +162,36 @@ autoconf -f -i
 # Reduce thread contention, upstream sets this flag for Linux hosts
 export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
 %configure \
-	--enable-shared \
-	--disable-static \
-	--with-modules \
-	--with-perl \
-	--with-x \
-	--with-threads \
-	--with-magick_plus_plus \
-	--with-gslib \
-	--with-wmf \
-	--with-webp \
-	--with-openexr \
-	--with-rsvg \
-	--with-xml \
-	--with-perl-options="INSTALLDIRS=vendor %{?perl_prefix} CC='%__cc -L$PWD/magick/.libs' LDDLFLAGS='-shared -L$PWD/magick/.libs'" \
-	--without-dps \
-	--without-gcc-arch \
-	--with-jbig \
-	--with-openjp2 \
-%if 0%{?fedora}
-	--with-raw \
-	--with-lqr \
-	--with-gvc \
-	--with-raqm
-%else
-%ifarch %{ix86} x86_64 %{power64}
-	--with-raw \
+        --enable-shared \
+        --disable-static \
+        --with-modules \
+        --with-perl \
+        --with-x \
+        --with-threads \
+        --with-magick_plus_plus \
+        --with-gslib \
+        --with-wmf \
+        --with-webp \
+        --with-openexr \
+        --with-rsvg \
+        --with-xml \
+        --with-perl-options="INSTALLDIRS=vendor %{?perl_prefix} CC='%__cc -L$PWD/magick/.libs' LDDLFLAGS='-shared -L$PWD/magick/.libs'" \
+        --without-dps \
+        --without-gcc-arch \
+        --with-jbig \
+        --with-openjp2 \
+%ifnarch s390x
+        --with-raw \
 %endif
-	--with-gvc
-%endif
+        --with-gvc \
+        --with-raqm
 
 # Do *NOT* use %%{?_smp_mflags}, this causes PerlMagick to be silently misbuild
 make
 
 
 %install
-make %{?_smp_mflags} install DESTDIR=%{buildroot} INSTALL="install -p"
+%make_install
 cp -a www/source %{buildroot}%{_datadir}/doc/%{name}-%{VER}
 # Delete *ONLY* _libdir/*.la files! .la files used internally to handle plugins - BUG#185237!!!
 rm %{buildroot}%{_libdir}/*.la
@@ -231,14 +210,14 @@ find %{buildroot} -name "perllocal.pod" |xargs rm -f
 # perlmagick: build files list
 echo "%defattr(-,root,root,-)" > perl-pkg-files
 find %{buildroot}/%{_libdir}/perl* -type f -print \
-	| sed "s@^%{buildroot}@@g" > perl-pkg-files
+        | sed "s@^%{buildroot}@@g" > perl-pkg-files
 find %{buildroot}%{perl_vendorarch} -type d -print \
-	| sed "s@^%{buildroot}@%dir @g" \
-	| grep -v '^%dir %{perl_vendorarch}$' \
-	| grep -v '/auto$' >> perl-pkg-files
+        | sed "s@^%{buildroot}@%dir @g" \
+        | grep -v '^%dir %{perl_vendorarch}$' \
+        | grep -v '/auto$' >> perl-pkg-files
 if [ -z perl-pkg-files ] ; then
-	echo "ERROR: EMPTY FILE LIST"
-	exit -1
+        echo "ERROR: EMPTY FILE LIST"
+        exit -1
 fi
 
 # fix multilib issues: Rename provided file with platform-bits in name.
@@ -269,14 +248,14 @@ multilibFileVersions %{buildroot}%{_includedir}/%{name}-6/magick/version.h
 
 %check
 export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
-make %{?_smp_mflags} check
+%make_build check
 rm PerlMagick/demo/Generic.ttf
 
 %ldconfig_scriptlets libs
 %ldconfig_scriptlets c++
 
 %files
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog.md
+%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt
 %{_bindir}/[a-z]*
 %{_mandir}/man[145]/[a-z]*
 %{_mandir}/man1/%{name}.*
@@ -314,10 +293,8 @@ rm PerlMagick/demo/Generic.ttf
 %{_mandir}/man1/Wand-config.*
 %{_mandir}/man1/MagickWand-config.*
 
-%if 0%{?fedora}
 %files djvu
 %{_libdir}/%{name}-%{VER}/modules-Q16/coders/djvu.*
-%endif
 
 %files doc
 %doc %{_datadir}/doc/%{name}-6
@@ -346,6 +323,11 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-1
+- Update ImageMagick to 6.9.12.48
+- Change the way of calculte VER and Patchlevel which will fix the-new-hotness/release-monitoring.org's scratch build
+- Sync with Fedora builds
+
 * Mon Mar 28 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.44-1
 - New upstream release 6.9.12.44
 
@@ -721,9 +703,9 @@ rm PerlMagick/demo/Generic.ttf
 * Wed Jun 12 2013 Pavel Alexeev <Pahan@Hubbitus.info> - 6.5.5.10-1
 - Update to 6.8.5-10 upstream version (bz#720285).
 - By Remi Collet request (bz#969760) enable those features in ImageMagick:
-	--with-lcms2 (instead of --with-lcms): lcms2-devel
-	--with-openexr: OpenEXR-devel
-	--with-webp: libwebp-devel
+    --with-lcms2 (instead of --with-lcms): lcms2-devel
+    --with-openexr: OpenEXR-devel
+    --with-webp: libwebp-devel
 
 * Thu Apr 18 2013 Pavel Alexeev <Pahan@Hubbitus.info> - 6.8.3.9-2
 - Enable fftw to do Fourier transforms (add BuildRequires: fftw-devel) - bz#950254 by Søren Sandmann Pedersen request.
@@ -761,7 +743,7 @@ rm PerlMagick/demo/Generic.ttf
 
 * Tue Apr 10 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.6.5-1
 - Update to 6.7.6.5 to fix security issues: bz#807993, bz#807994, bz#807997,
-	bz#808159, bz#804591, bz#804588
+    bz#808159, bz#804591, bz#804588
 
 * Sat Feb 25 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 6.7.5.6-1
 - Update by request https://bugzilla.redhat.com/show_bug.cgi?id=755827#c8
@@ -821,7 +803,7 @@ rm PerlMagick/demo/Generic.ttf
 
 * Fri Jul 30 2010 Pavel Alexeev <Pahan@Hubbitus.info> - 6.6.2.1-12
 - Add %%doc LICENSE as it required new Licensing Guidelines Update
-	( https://fedoraproject.org/wiki/Packaging:LicensingGuidelines )
+    ( https://fedoraproject.org/wiki/Packaging:LicensingGuidelines )
 
 * Wed Jun 23 2010 Mamoru Tasaka <mtasaka@ioa.s.u-tokyo.ac.jp> - 6.6.2.1-11
 - Rebuild (to fix downgrade after perl-5.12.0-rebuild tag)
@@ -905,9 +887,9 @@ rm PerlMagick/demo/Generic.ttf
 * Sun Jul 27 2008 Hans de Goede <jwrdegoede@fedoraproject.org> 6.4.0.10-2
 - Fix ownership of /usr/include/ImageMagick (bz 444647)
 - By Remi request (bz#969760) enable those features in ImageMagick:
-	--with-lcms2 (instead of --with-lcms): lcms2-devel
-	--with-openexr: OpenEXR-devel
-	--with-webp: libwebp-devel
+    --with-lcms2 (instead of --with-lcms): lcms2-devel
+    --with-openexr: OpenEXR-devel
+    --with-webp: libwebp-devel
 
 * Sat Apr 26 2008 Hans de Goede <jwrdegoede@fedoraproject.org> 6.4.0.10-1
 - New upstream release 6.4.0.10
