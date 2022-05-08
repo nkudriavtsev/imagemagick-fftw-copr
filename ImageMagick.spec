@@ -19,11 +19,6 @@ License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
 Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
-# Fix segfaults on s390x with rubygem-acitvestorage test suite.
-# https://bugzilla.redhat.com/show_bug.cgi?id=1993193
-# https://github.com/ImageMagick/ImageMagick6/commit/112051a709f83f13ca2b9ab63007d4a41b0a9beb
-#Patch0:        ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
-
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
 BuildRequires:  perl-generators
