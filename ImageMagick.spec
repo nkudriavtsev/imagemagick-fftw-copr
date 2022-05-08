@@ -1,5 +1,3 @@
-%global VER 6.9.12
-%global Patchlevel 44
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
@@ -11,18 +9,20 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        %{VER}.%{Patchlevel}
+Version:        6.9.12.48
 Release:        1%{?dist}
 Summary:        An X application for displaying and manipulating images
 
+%global VER %(foo=%{version}; echo ${foo:0:6})
+%global Patchlevel %(foo=%{version}; echo ${foo:7})
 License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
-Source0:        https://www.imagemagick.org/download/%{name}-%{VER}-%{Patchlevel}.tar.xz
+Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
 # Fix segfaults on s390x with rubygem-acitvestorage test suite.
 # https://bugzilla.redhat.com/show_bug.cgi?id=1993193
 # https://github.com/ImageMagick/ImageMagick6/commit/112051a709f83f13ca2b9ab63007d4a41b0a9beb
-#Patch0:                ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
+#Patch0:        ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
 
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
@@ -36,7 +36,7 @@ BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
 BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
 BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
-%if 0%{?fedora} > 34
+%if 0%{?fedora} > 34 || 0%{?epel} > 8
 BuildRequires:  pkgconfig(OpenEXR)
 %else
 BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
@@ -257,7 +257,7 @@ rm PerlMagick/demo/Generic.ttf
 %ldconfig_scriptlets c++
 
 %files
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog.md
+%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt
 %{_bindir}/[a-z]*
 %{_mandir}/man[145]/[a-z]*
 %{_mandir}/man1/%{name}.*
@@ -325,6 +325,10 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-1
+- Update ImageMagick to 6.9.12.48
+- Change the way of calculte VER and Patchlevel which will fix the-new-hotness/release-monitoring.org's scratch build
+
 * Mon Mar 28 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.44-1
 - New upstream release 6.9.12.44
 
@@ -339,7 +343,14 @@ rm PerlMagick/demo/Generic.ttf
 
 * Sat Jan 29 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.37-1
 - Update to 6.9.12.37 (#2034280)
-        
+
+* Mon Jan 24 2022 Timm Bäder <tbaeder@redhat.com> - 1:6.9.12.32-3
+- Disable automatic .la file removal
+- https://fedoraproject.org/wiki/Changes/RemoveLaFiles
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.12.32-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Mon Dec 06 2021 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12-32
 - Update to 6.9.12-32 (#2029637)
 
