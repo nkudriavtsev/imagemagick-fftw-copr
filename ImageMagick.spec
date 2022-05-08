@@ -10,7 +10,7 @@ Epoch:          1
 Epoch:          0
 %endif
 Version:        6.9.12.48
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -43,6 +43,7 @@ BuildRequires:  pkgconfig(libcgraph) >= 2.9.0
 BuildRequires:  pkgconfig(raqm)
 BuildRequires:  pkgconfig(lqr-1)
 BuildRequires:  pkgconfig(libraw) >= 0.14.8
+BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  autoconf automake gcc gcc-c++
 BuildRequires:  make
 
@@ -183,6 +184,9 @@ export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
         --with-gvc \
         --with-raqm
 
+# shoud we enable hdri ?
+#       --enable-hdri
+
 # Do *NOT* use %%{?_smp_mflags}, this causes PerlMagick to be silently misbuild
 make
 
@@ -320,6 +324,11 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-2
+- Support eln
+- add support libzst
+- should we enable hdri ?
+
 * Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-1
 - Update ImageMagick to 6.9.12.48
 - Change the way of calculte VER and Patchlevel which will fix the-new-hotness/release-monitoring.org's scratch build
