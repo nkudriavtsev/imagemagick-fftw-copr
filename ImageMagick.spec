@@ -22,7 +22,7 @@ Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{P
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
 BuildRequires:  perl-generators
-%if 0%{?fedora} > 27
+%if 0%{?fedora} > 27 || 0%{?epel} > 7 || 0%{?eln} > 14
 BuildRequires:  libgs-devel, ghostscript-x11
 %else
 BuildRequires:  ghostscript-devel
@@ -31,7 +31,7 @@ BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
 BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
 BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
-%if 0%{?fedora} > 34 || 0%{?epel} > 8
+%if 0%{?fedora} > 34 || 0%{?epel} > 8 || 0%{?eln} > 14
 BuildRequires:  pkgconfig(OpenEXR)
 %else
 BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
