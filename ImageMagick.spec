@@ -1,5 +1,3 @@
-%global VER 6.9.12
-%global Patchlevel 44
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
@@ -11,10 +9,12 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        %{VER}.%{Patchlevel}
+Version:        6.9.12.48
 Release:        1%{?dist}
 Summary:        An X application for displaying and manipulating images
 
+%global VER %(foo=%{version}; echo ${foo:0:6})
+%global Patchlevel %(foo=%{version}; echo ${foo:7})
 License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
 Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
@@ -257,7 +257,7 @@ rm PerlMagick/demo/Generic.ttf
 %ldconfig_scriptlets c++
 
 %files
-%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt ChangeLog.md
+%doc README.txt LICENSE NOTICE AUTHORS.txt NEWS.txt
 %{_bindir}/[a-z]*
 %{_mandir}/man[145]/[a-z]*
 %{_mandir}/man1/%{name}.*
@@ -325,6 +325,10 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-1
+- Update ImageMagick to 6.9.12.48
+- Change the way of calculte VER and Patchlevel which will fix the-new-hotness/release-monitoring.org's scratch build
+
 * Mon Mar 28 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.44-1
 - New upstream release 6.9.12.44
 
