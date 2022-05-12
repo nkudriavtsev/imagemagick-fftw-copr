@@ -10,7 +10,7 @@ Epoch:          1
 Epoch:          0
 %endif
 Version:        6.9.12.48
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -41,10 +41,7 @@ BuildRequires:  jbigkit-devel
 BuildRequires:  pkgconfig(libopenjp2) >= 2.1.0
 BuildRequires:  pkgconfig(libcgraph) >= 2.9.0
 BuildRequires:  pkgconfig(raqm)
-%ifnarch s390x aarch64
-# not in EPEL s390x or aarch64
 BuildRequires:  pkgconfig(libraw) >= 0.14.8
-%endif
 BuildRequires:  autoconf automake gcc gcc-c++
 BuildRequires:  make
 
@@ -323,6 +320,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Thu May 12 2022 Steve Traylen <steve.traylen@crn.ch> - 1:6.9.12.48-3
+- libraw-epel now available for aarch64 and s390
+
 * Wed May 11 2022 Steve Traylen <steve.traylen@crn.ch> - 1:6.9.12.48-2
 - libraw not available for aarch64 (was for a time by accident)
 
