@@ -10,7 +10,7 @@ Epoch:          1
 Epoch:          0
 %endif
 Version:        6.9.12.48
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -22,7 +22,7 @@ Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{P
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
 BuildRequires:  perl-generators
-%if 0%{?fedora} > 27 || 0%{?epel} > 7 || 0%{?eln} > 14
+%if 0%{?fedora} > 27 || 0%{?rhel} > 7
 BuildRequires:  libgs-devel, ghostscript-x11
 %else
 BuildRequires:  ghostscript-devel
@@ -31,7 +31,7 @@ BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
 BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
 BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
-%if 0%{?fedora} > 34 || 0%{?epel} > 8 || 0%{?eln} > 14
+%if 0%{?fedora} > 34 || 0%{?rhel} > 8
 BuildRequires:  pkgconfig(OpenEXR)
 %else
 BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
@@ -324,6 +324,10 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Mon May 16 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-3
+- Don't use the %{?eln} macro, you should use %{?rhel} recommended by Stephen
+  Gallagher
+
 * Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-2
 - Support eln
 - add support libzst
