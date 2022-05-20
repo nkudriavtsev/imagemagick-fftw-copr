@@ -10,7 +10,7 @@ Epoch:          1
 Epoch:          0
 %endif
 Version:        6.9.12.48
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -324,6 +324,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Fri May 20 2022 Sandro Mani <manisandro@gmail.com> - 1:6.9.12.48-4
+- Rebuild for gdal-3.5.0 and/or openjpeg-2.5.0
+
 * Mon May 16 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-3
 - Don't use the %{?eln} macro, you should use %{?rhel} recommended by Stephen
   Gallagher
