@@ -46,6 +46,9 @@ BuildRequires:  autoconf automake gcc gcc-c++
 BuildRequires:  make
 
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+# allow smoth upgrade for 3rd party repository
+# providing latest version/soname as ImageMagick6
+Obsoletes:      %{name}6            <= %{epoch}:%{version}-%{release}
 
 %description
 ImageMagick is an image display and manipulation tool for the X
@@ -67,6 +70,7 @@ ImageMagick-devel as well.
 Summary:        Library links and header files for ImageMagick app development
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes:      %{name}6-devel      <= %{epoch}:%{version}-%{release}
 
 %description devel
 ImageMagick-devel contains the library links and header files you'll
@@ -81,6 +85,7 @@ however.
 
 %package libs
 Summary: ImageMagick libraries to link with
+Obsoletes: %{name}6-libs <= %{epoch}:%{version}-%{release}
 
 %description libs
 This packages contains a shared libraries to use within other applications.
@@ -89,6 +94,7 @@ This packages contains a shared libraries to use within other applications.
 %package djvu
 Summary: DjVu plugin for ImageMagick
 Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes: %{name}6-djvu      <= %{epoch}:%{version}-%{release}
 
 %description djvu
 This packages contains a plugin for ImageMagick which makes it possible to
@@ -97,6 +103,7 @@ save and load DjvU files from ImageMagick and libMagickCore using applications.
 
 %package doc
 Summary: ImageMagick html documentation
+Obsoletes: %{name}6-doc <= %{epoch}:%{version}-%{release}
 
 %description doc
 ImageMagick documentation, this package contains usage (for the
@@ -109,6 +116,7 @@ http://www.imagemagick.org/
 Summary:        ImageMagick perl bindings
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Obsoletes:      %{name}6-perl       <= %{epoch}:%{version}-%{release}
 
 %description perl
 Perl bindings to ImageMagick.
@@ -120,6 +128,7 @@ ImageMagick.
 %package c++
 Summary:        ImageMagick Magick++ library (C++ bindings)
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes:      %{name}6-c++        <= %{epoch}:%{version}-%{release}
 
 %description c++
 This package contains the Magick++ library, a C++ binding to the ImageMagick
@@ -132,6 +141,7 @@ Install ImageMagick-c++ if you want to use any applications that use Magick++.
 Summary:        C++ bindings for the ImageMagick library
 Requires:       %{name}-c++%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes:      %{name}6-c++-devel   <= %{epoch}:%{version}-%{release}
 
 %description c++-devel
 ImageMagick-devel contains the static libraries and header files you'll
