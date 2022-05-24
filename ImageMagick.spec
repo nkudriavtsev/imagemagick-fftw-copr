@@ -332,6 +332,7 @@ rm PerlMagick/demo/Generic.ttf
 %changelog
 * Thu May 12 2022 Steve Traylen <steve.traylen@crn.ch> - 1:6.9.12.48-3
 - libraw-epel now available for aarch64 and s390
+- allow smooth upgrade for 3rd party repository providing latest version/soname as ImageMagick6
 
 * Wed May 11 2022 Steve Traylen <steve.traylen@crn.ch> - 1:6.9.12.48-2
 - libraw not available for aarch64 (was for a time by accident)
