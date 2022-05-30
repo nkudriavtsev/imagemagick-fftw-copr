@@ -9,8 +9,8 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        6.9.12.48
-Release:        3%{?dist}
+Version:        6.9.12.50
+Release:        1%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -22,7 +22,7 @@ Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{P
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
 BuildRequires:  perl-generators
-%if 0%{?fedora} > 27
+%if 0%{?fedora} > 27 || 0%{?rhel} > 7
 BuildRequires:  libgs-devel, ghostscript-x11
 %else
 BuildRequires:  ghostscript-devel
@@ -31,7 +31,7 @@ BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
 BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
 BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
-%if 0%{?fedora} > 34 || 0%{?epel} > 8
+%if 0%{?fedora} > 34 || 0%{?rhel} > 8
 BuildRequires:  pkgconfig(OpenEXR)
 %else
 BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
@@ -42,6 +42,7 @@ BuildRequires:  pkgconfig(libopenjp2) >= 2.1.0
 BuildRequires:  pkgconfig(libcgraph) >= 2.9.0
 BuildRequires:  pkgconfig(raqm)
 BuildRequires:  pkgconfig(libraw) >= 0.14.8
+BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  autoconf automake gcc gcc-c++
 BuildRequires:  make
 
@@ -187,9 +188,7 @@ export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
         --without-gcc-arch \
         --with-jbig \
         --with-openjp2 \
-%ifnarch s390x
         --with-raw \
-%endif
         --with-gvc \
         --with-raqm
 
@@ -330,6 +329,12 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun May 29 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.50-1
+- Update ImageMagick to 6.9.12.50 (#2087046)
+- Don't use the %{?eln} macro, you should use %{?rhel} recommended by Stephen
+  Gallagher
+- add support libzst
+
 * Thu May 12 2022 Steve Traylen <steve.traylen@crn.ch> - 1:6.9.12.48-3
 - libraw-epel now available for aarch64 and s390
 - allow smooth upgrade for 3rd party repository providing latest version/soname as ImageMagick6
