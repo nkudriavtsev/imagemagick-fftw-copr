@@ -9,7 +9,7 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        6.9.12.48
+Version:        6.9.12.50
 Release:        1%{?dist}
 Summary:        An X application for displaying and manipulating images
 
@@ -19,15 +19,10 @@ License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
 Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
-# Fix segfaults on s390x with rubygem-acitvestorage test suite.
-# https://bugzilla.redhat.com/show_bug.cgi?id=1993193
-# https://github.com/ImageMagick/ImageMagick6/commit/112051a709f83f13ca2b9ab63007d4a41b0a9beb
-#Patch0:        ImageMagick-6.9.11-42-Moved-swapping-to-the-correct-position.patch
-
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
 BuildRequires:  perl-generators
-%if 0%{?fedora} > 27
+%if 0%{?fedora} > 27 || 0%{?rhel} > 7
 BuildRequires:  libgs-devel, ghostscript-x11
 %else
 BuildRequires:  ghostscript-devel
@@ -36,7 +31,7 @@ BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(libwmf), pkgconfig(jasper), libtool-ltdl-devel
 BuildRequires:  pkgconfig(x11), pkgconfig(xext), pkgconfig(xt)
 BuildRequires:  pkgconfig(lcms2), pkgconfig(libxml-2.0), pkgconfig(librsvg-2.0)
-%if 0%{?fedora} > 34 || 0%{?epel} > 8
+%if 0%{?fedora} > 34 || 0%{?rhel} > 8
 BuildRequires:  pkgconfig(OpenEXR)
 %else
 BuildRequires:  pkgconfig(IlmBase), pkgconfig(OpenEXR) < 2.5.6
@@ -48,10 +43,14 @@ BuildRequires:  pkgconfig(libcgraph) >= 2.9.0
 BuildRequires:  pkgconfig(raqm)
 BuildRequires:  pkgconfig(lqr-1)
 BuildRequires:  pkgconfig(libraw) >= 0.14.8
+BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  autoconf automake gcc gcc-c++
 BuildRequires:  make
 
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+# allow smoth upgrade for 3rd party repository
+# providing latest version/soname as ImageMagick6
+Obsoletes:      %{name}6            <= %{epoch}:%{version}-%{release}
 
 %description
 ImageMagick is an image display and manipulation tool for the X
@@ -73,6 +72,7 @@ ImageMagick-devel as well.
 Summary:        Library links and header files for ImageMagick app development
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes:      %{name}6-devel      <= %{epoch}:%{version}-%{release}
 
 %description devel
 ImageMagick-devel contains the library links and header files you'll
@@ -87,6 +87,7 @@ however.
 
 %package libs
 Summary: ImageMagick libraries to link with
+Obsoletes: %{name}6-libs <= %{epoch}:%{version}-%{release}
 
 %description libs
 This packages contains a shared libraries to use within other applications.
@@ -95,6 +96,7 @@ This packages contains a shared libraries to use within other applications.
 %package djvu
 Summary: DjVu plugin for ImageMagick
 Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes: %{name}6-djvu      <= %{epoch}:%{version}-%{release}
 
 %description djvu
 This packages contains a plugin for ImageMagick which makes it possible to
@@ -103,6 +105,7 @@ save and load DjvU files from ImageMagick and libMagickCore using applications.
 
 %package doc
 Summary: ImageMagick html documentation
+Obsoletes: %{name}6-doc <= %{epoch}:%{version}-%{release}
 
 %description doc
 ImageMagick documentation, this package contains usage (for the
@@ -115,6 +118,7 @@ http://www.imagemagick.org/
 Summary:        ImageMagick perl bindings
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Obsoletes:      %{name}6-perl       <= %{epoch}:%{version}-%{release}
 
 %description perl
 Perl bindings to ImageMagick.
@@ -126,6 +130,7 @@ ImageMagick.
 %package c++
 Summary:        ImageMagick Magick++ library (C++ bindings)
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes:      %{name}6-c++        <= %{epoch}:%{version}-%{release}
 
 %description c++
 This package contains the Magick++ library, a C++ binding to the ImageMagick
@@ -138,6 +143,7 @@ Install ImageMagick-c++ if you want to use any applications that use Magick++.
 Summary:        C++ bindings for the ImageMagick library
 Requires:       %{name}-c++%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
+Obsoletes:      %{name}6-c++-devel   <= %{epoch}:%{version}-%{release}
 
 %description c++-devel
 ImageMagick-devel contains the static libraries and header files you'll
@@ -187,6 +193,9 @@ export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
         --with-lqr \
         --with-gvc \
         --with-raqm
+
+# shoud we enable hdri ?
+#       --enable-hdri
 
 # Do *NOT* use %%{?_smp_mflags}, this causes PerlMagick to be silently misbuild
 make
@@ -325,6 +334,21 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sun May 29 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.50-1
+- Update ImageMagick to 6.9.12.50 (#2087046)
+
+* Fri May 20 2022 Sandro Mani <manisandro@gmail.com> - 1:6.9.12.48-4
+- Rebuild for gdal-3.5.0 and/or openjpeg-2.5.0
+
+* Mon May 16 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-3
+- Don't use the %{?eln} macro, you should use %{?rhel} recommended by Stephen
+  Gallagher
+
+* Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-2
+- Support eln
+- add support libzst
+- should we enable hdri ?
+
 * Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-1
 - Update ImageMagick to 6.9.12.48
 - Change the way of calculte VER and Patchlevel which will fix the-new-hotness/release-monitoring.org's scratch build
