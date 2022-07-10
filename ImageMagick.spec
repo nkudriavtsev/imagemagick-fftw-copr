@@ -9,7 +9,7 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        6.9.12.52
+Version:        6.9.12.58
 Release:        1%{?dist}
 Summary:        An X application for displaying and manipulating images
 
@@ -17,7 +17,7 @@ Summary:        An X application for displaying and manipulating images
 %global Patchlevel %(foo=%{version}; echo ${foo:7})
 License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
-Source0:        https://www.imagemagick.org/download/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
+Source0:        https://www.imagemagick.org/archive/%{name}-%{VER}-%{Patchlevel}.tar.xz
 
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
@@ -334,6 +334,12 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Sat Jul 09 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.58-1
+- Update ImageMagick to 6.9.12.58 (#2105662)
+
+* Sat Jul 09 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.56-1
+- Update ImageMagick to 6.9.12.56 (#2105662)
+
 * Thu Jun 16 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.52-1
 - Update ImageMagick to 6.9.12.52 (#2092110)
 
