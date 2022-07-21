@@ -10,7 +10,7 @@ Epoch:          1
 Epoch:          0
 %endif
 Version:        6.9.12.58
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -18,6 +18,10 @@ Summary:        An X application for displaying and manipulating images
 License:        ImageMagick
 Url:            https://legacy.imagemagick.org/
 Source0:        https://www.imagemagick.org/archive/%{name}-%{VER}-%{Patchlevel}.tar.xz
+# https://bugzilla.redhat.com/show_bug.cgi?id=2107201
+# https://github.com/ImageMagick/ImageMagick6/issues/191
+# https://github.com/ImageMagick/ImageMagick6/commit/909d77066640baf07e01932b6aa5c719c50f1ccd
+Patch0:         ImageMagick-6.9.12.53-eliminate-lint-warning-ColorFormatLocaleFile.patch
 
 BuildRequires:  pkgconfig(bzip2), pkgconfig(freetype2), pkgconfig(libjpeg), pkgconfig(libpng)
 BuildRequires:  pkgconfig(libtiff-4), giflib-devel, pkgconfig(zlib), perl-devel >= 5.8.1
@@ -159,7 +163,10 @@ however.
 
 
 %prep
-%autosetup -p1 -n %{name}-%{VER}-%{Patchlevel}
+#%%autosetup -p1 -n %{name}-%{VER}-%{Patchlevel}
+%setup -q -n %{name}-%{VER}-%{Patchlevel}
+# Reverse PATCH1 change
+%patch -p1 -R
 
 # for %%doc
 mkdir Magick++/examples
@@ -334,6 +341,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Thu Jul 21 2022 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1:6.9.12.58-3
+- Workaround for json convertion abort (#2107201)
+
 * Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1:6.9.12.58-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
