@@ -9,7 +9,7 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        6.9.12.62
+Version:        6.9.12.63
 Release:        1%{?dist}
 Summary:        An X application for displaying and manipulating images
 
@@ -335,6 +335,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Tue Sep 13 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.63-1
+- Update ImageMagick to 6.9.12.63 (#2125990)
+
 * Wed Sep 07 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.62-1
 - Update ImageMagick to 6.9.12.62 (#2121962)
 - Fixes CVE-2021-3574 (#2124540, #2124541, #2124542)
