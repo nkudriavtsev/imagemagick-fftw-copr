@@ -377,6 +377,7 @@ rm PerlMagick/demo/Generic.ttf
 * Sun May 08 2022 Sérgio Basto <sergio@serjux.com> - 1:6.9.12.48-1
 - Update ImageMagick to 6.9.12.48
 - Change the way of calculte VER and Patchlevel which will fix the-new-hotness/release-monitoring.org's scratch build
+- Sync with Fedora builds
 
 * Mon Mar 28 2022 Luya Tshimbalanga <luya@fedoraproject.org> - 1:6.9.12.44-1
 - New upstream release 6.9.12.44
