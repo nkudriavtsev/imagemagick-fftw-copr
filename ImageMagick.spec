@@ -41,7 +41,9 @@ BuildRequires:  jbigkit-devel
 BuildRequires:  pkgconfig(libopenjp2) >= 2.1.0
 BuildRequires:  pkgconfig(libcgraph) >= 2.9.0
 BuildRequires:  pkgconfig(raqm)
+%if 0%{?fedora} || 0%{?rhel} > 8
 BuildRequires:  pkgconfig(lqr-1)
+%endif
 BuildRequires:  pkgconfig(libraw) >= 0.14.8
 BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  autoconf automake gcc gcc-c++
@@ -190,12 +192,11 @@ export CFLAGS="%{optflags} -DIMPNG_SETJMP_IS_THREAD_SAFE"
         --with-jbig \
         --with-openjp2 \
         --with-raw \
+%if 0%{?fedora} || 0%{?rhel} > 8
         --with-lqr \
+%endif
         --with-gvc \
         --with-raqm
-
-# shoud we enable hdri ?
-#       --enable-hdri
 
 # Do *NOT* use %%{?_smp_mflags}, this causes PerlMagick to be silently misbuild
 make
