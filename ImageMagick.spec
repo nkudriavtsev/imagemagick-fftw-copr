@@ -20,7 +20,6 @@ Summary:        An X application for displaying and manipulating images
 License:        ImageMagick
 URL:            https://imagemagick.org/
 Source0:        https://imagemagick.org/archive/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
-Source1:        https://imagemagick.org/archive/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz.asc
 
 BuildRequires:  pkgconfig(bzip2)
 BuildRequires:  pkgconfig(freetype2)
@@ -192,7 +191,6 @@ however.
 
 
 %prep
-%{gpgverify} --keyring=%{SOURCE2} --signature=%{SOURCE1} --data=%{SOURCE0}
 %autosetup -p1 -n %{name}-%{VER}-%{Patchlevel}
 
 # for %%doc
