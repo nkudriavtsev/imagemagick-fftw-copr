@@ -21,7 +21,6 @@ License:        ImageMagick
 URL:            https://imagemagick.org/
 Source0:        https://imagemagick.org/archive/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 Source1:        https://imagemagick.org/archive/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz.asc
-Source2:        ImageMagick.keyring
 
 BuildRequires:  pkgconfig(bzip2)
 BuildRequires:  pkgconfig(freetype2)
