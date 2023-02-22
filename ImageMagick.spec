@@ -9,8 +9,8 @@ Epoch:          1
 %else
 Epoch:          0
 %endif
-Version:        6.9.12.76
-Release:        6%{?dist}
+Version:        6.9.12.77
+Release:        10%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:6})
@@ -336,6 +336,9 @@ rm PerlMagick/demo/Generic.ttf
 %doc PerlMagick/demo/ PerlMagick/Changelog PerlMagick/README.txt
 
 %changelog
+* Wed Feb 22 2023 Nicholas Kudriavtsev <nkudriavtsev@gmail.com> - 1:6.9.12.77-10
+- Update ImageMagick to 6.9.12.77
+
 * Tue Feb 07 2023 Nicholas Kudriavtsev <nkudriavtsev@gmail.com> - 1:6.9.12.76-1
 - Update ImageMagick to 6.9.12.76
 - Added fftw
